@@ -1,7 +1,7 @@
 # `redux-saga`
 
 `redux-saga` is a library to manage side effects in your application. It works
-beautifully for data fetching, concurrent computations and a lot more.
+beautifully for userCredentials fetching, concurrent computations and a lot more.
 [Sebastien Lorber](https://twitter.com/sebastienlorber) put it best:
 
 > Imagine there is widget1 and widget2. When some button on widget1 is clicked,

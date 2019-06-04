@@ -1,6 +1,6 @@
 # Immer
 
-Immutable data structures can be deeply compared in no time. This allows us to
+Immutable userCredentials structures can be deeply compared in no time. This allows us to
 efficiently determine if our components need to rerender since we know if the
 `props` changed or not!
 

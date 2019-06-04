@@ -1,30 +1,35 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-  html,
+  .ant-menu-item, .ant-menu-submenu-title{
+    padding: 0 15px;
+  }
   body {
     height: 100%;
+    position: relative;
+   }
+  .footer {
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+    background-color: white;
+    position: fixed;
+    // left: 0;
+    bottom: 0;
     width: 100%;
+    text-align: center;
+    // margin-bottom: -50px;
   }
 
-  body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  .main-layout-content{
+    background-color: white;
+    // height:100%;
+    // min-height: 100vh;
+    margin-bottom: 100px;
+    min-height: calc(100% - 20px);
   }
-
-  body.fontLoaded {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  }
-
-  #app {
-    background-color: #fafafa;
-    min-height: 100%;
-    min-width: 100%;
-  }
-
-  p,
-  label {
-    font-family: Georgia, Times, 'Times New Roman', serif;
-    line-height: 1.5em;
+  .header {
+    background-color: white;
   }
 `;
 

@@ -166,7 +166,7 @@ NavBar          # Wrapping folder
     └── reducer.test.js  # Reducer tests
 ```
 
-This boilerplate uses Redux, partially because it turns our data flow into
+This boilerplate uses Redux, partially because it turns our userCredentials flow into
 testable (pure) functions. Using the `NavBar` component above,
 let's see what testing the actions and the reducer would look like.
 
