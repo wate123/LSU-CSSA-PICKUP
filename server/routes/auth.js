@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', (req, res, next) =>
   // const validationResult = validateSignupForm(req.body);
   // if (!validationResult.success) {
   //   return res.status(400).json({
@@ -31,7 +31,7 @@ router.post('/signup', (req, res, next) => {
   //     errors: validationResult.errors
   //   });
   // }
-  return passport.authenticate('local-signup', err => {
+  passport.authenticate('local-signup', err => {
     if (err) {
       if (err.name === 'MongoError' && err.code === 11000) {
         // the 11000 Mongo code is for a duplication email error
@@ -53,11 +53,11 @@ router.post('/signup', (req, res, next) => {
       isSuccess: true,
       message: '註冊成功.',
     });
-  })(req, res, next);
-});
+  })(req, res, next),
+);
 
-router.post('/login', (req, res, next) => {
-  return passport.authenticate('local-login', (err, tokens, data) => {
+router.post('/login', (req, res, next) =>
+  passport.authenticate('local-login', (err, tokens, data) => {
     if (err) {
       if (err.name === 'IncorrectCredentialsError') {
         return res.status(401).json({
@@ -78,8 +78,8 @@ router.post('/login', (req, res, next) => {
       accessToken: tokens.accessToken,
       user: data,
     });
-  })(req, res, next);
-});
+  })(req, res, next),
+);
 
 router.post('/forgot', (req, res) => {
   // User.findOne({
@@ -182,9 +182,9 @@ router.post('/forgot', (req, res) => {
       const locals = {
         email: req.body.email,
         name: user.name,
-        token: token,
+        token,
       };
-      //create the path of email template folder
+      // create the path of email template folder
       const templateDir = path.join(
         __dirname,
         '../',
@@ -214,7 +214,7 @@ router.post('/forgot', (req, res) => {
                 {
                   filename: 'cssaQR.png',
                   path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-                  cid: '../../static/cssaQR.png', //same cid value as in the html img src
+                  cid: '../../static/cssaQR.png', // same cid value as in the html img src
                 },
               ],
             },
@@ -226,8 +226,7 @@ router.post('/forgot', (req, res) => {
               console.log('Message sent: ');
               return res.status(200).json({
                 success: true,
-                message:
-                  '已发送密码重置邮件到' + req.body.email + ', 请注意查收.',
+                message: `已发送密码重置邮件到${req.body.email}, 请注意查收.`,
               });
             },
           );
@@ -249,11 +248,10 @@ router.post('/reset/:token', function(req, res) {
           success: false,
           message: '密码重置链接无效或已过期',
         });
-      } else {
-        return res.status(200).json({
-          success: true,
-        });
       }
+      return res.status(200).json({
+        success: true,
+      });
     },
   );
 });
@@ -272,24 +270,23 @@ router.post('/resetPass/:token', function(req, res) {
               return res
                 .status(200)
                 .json({ success: false, message: '密码重置链接无效或已过期' });
-            } else {
-              user.password = req.body.password.trim();
-              user.reset_password_token = null;
-              user.reset_password_expires = null;
-
-              user.save(function(err) {
-                if (err) {
-                  return done(err);
-                }
-                return res.status(200).json({
-                  success: true,
-                  message:
-                    user.name === ''
-                      ? user.email
-                      : user.name + '的密码重置已完成, 请重新登录！',
-                });
-              });
             }
+            user.password = req.body.password.trim();
+            user.reset_password_token = null;
+            user.reset_password_expires = null;
+
+            user.save(function(err) {
+              if (err) {
+                return done(err);
+              }
+              return res.status(200).json({
+                success: true,
+                message:
+                  user.name === ''
+                    ? user.email
+                    : `${user.name}的密码重置已完成, 请重新登录！`,
+              });
+            });
           },
         );
       },

@@ -47,12 +47,10 @@
 // });
 //
 
-
 // var sendResetPasswordLink = transporter.templateSender(
 //     new EmailTemplate('./mailTemplate/resetPassword'), {
 //         from: config.qq,
 //     });
-
 
 // exports.sendPasswordReset = function (email, username, name, tokenUrl) {
 //     // transporter.template

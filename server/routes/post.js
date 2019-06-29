@@ -195,7 +195,7 @@ router.post('/newRequest', (req, res) => {
       { upsert: true },
       (err, firstTimeDoc) => {
         if (err) {
-          console.log('first time or new insert doc fail ' + err);
+          console.log(`first time or new insert doc fail ${err}`);
         } else {
           return res.status(200).json({
             message: '系统已收到你的接机请求, 请耐心等待志愿者接受你的请求',
@@ -255,7 +255,7 @@ router.post('/volunteer', (req, res) => {
         {
           from: process.env.myemail,
           to: ' LISTSERV@LISTSERV.LSU.EDU',
-          text: 'ADD CSSA-L ' + req.user.email,
+          text: `ADD CSSA-L ${req.user.email}`,
         },
         function(error, info) {
           if (error) {
@@ -272,7 +272,7 @@ router.post('/volunteer', (req, res) => {
       { upsert: true, new: true },
       (err, firstTimeDoc) => {
         if (err) {
-          console.log('first time or new insert doc fail ' + err);
+          console.log(`first time or new insert doc fail ${err}`);
         } else {
           return res.status(200).json({
             message: '申请成为志愿者成功！',
@@ -347,7 +347,7 @@ router.post('/userInfo', (req, res) => {
         {
           from: process.env.myemail,
           to: ' LISTSERV@LISTSERV.LSU.EDU',
-          text: 'ADD CSSA-L ' + req.user.email,
+          text: `ADD CSSA-L ${req.user.email}`,
         },
         function(error, info) {
           if (error) {
@@ -363,129 +363,91 @@ router.post('/userInfo', (req, res) => {
         return res.status(500).json({
           message: '未知错误, 请刷新',
         });
-      } else {
-        if (docs.name === '') {
-          user_info['accepted'] = false;
-          User.findByIdAndUpdate(
-            userId,
-            user_info,
-            { upsert: true, new: true },
-            (err, firstTimeDoc) => {
-              if (err) {
-                console.log('first time insert doc fail ' + err);
-              } else {
-                return res.status(200).json({
-                  message:
-                    '系统已收到你的接机请求, 请耐心等待志愿者接受你的请求',
-                  token: newToken,
-                  name: firstTimeDoc.name,
-                });
-              }
-            },
-          );
-        } else {
-          if (docs.accepted && docs.volunteerEmail != null) {
-            User.findOne(
-              { email: docs.volunteerEmail },
-              (err, volunteerInfo) => {
-                if (err) {
-                  console.log("can't find volunteer " + err);
-                } else {
-                  const requester = {
-                    requesterEmail: req.user.email,
-                    requesterName: docs.name,
-                    volunteerName: volunteerInfo.name,
-                    name: volunteerInfo.name,
-                    email: volunteerInfo.email,
-                    contact: volunteerInfo.contact,
-                    sex: volunteerInfo.sex,
-                    major: volunteerInfo.major,
-                    degree: volunteerInfo.degree,
-                    car: volunteerInfo.car,
-                  };
-                  sendToRequester(requester);
-                  const requesterInfo = {
-                    volunteerName: volunteerInfo.name,
-                    volunteerEmail: volunteerInfo.email,
-                    name: docs.name,
-                    phone: docs.phone,
-                    email: docs.email,
-                    social: docs.social,
-                    date: new Date(docs.arriveDateTime).toLocaleDateString(),
-                    time: new Date(docs.arriveDateTime).toLocaleTimeString(),
-                    arriveAirport: docs.arriveAirport,
-                    hometown: docs.hometown,
-                    school: docs.school,
-                    degree: docs.degree,
-                    luggage: docs.luggage,
-                    toVolunteer: docs.toVolunteer,
-                  };
-                  let diffObj = {};
-                  for (let field in requesterInfo) {
-                    if (field === 'volunteerEmail' || field === 'volunteerName')
-                      diffObj[field] = requesterInfo[field];
-                    else if (field === 'date') {
-                      const newDate = moment(req.body.dateTime).format(
-                        'YYYY-MM-DD',
-                      );
-                      const oldDate = moment(docs.arriveDateTime).format(
-                        'YYYY-MM-DD',
-                      );
-                      console.log('new ' + newDate);
-                      console.log('old ' + oldDate);
-                      if (newDate !== oldDate) diffObj[field] = newDate;
-                    } else if (field === 'time') {
-                      const newTime = moment(req.body.dateTime).format(
-                        'HH:mm:ss',
-                      );
-                      const oldTime = moment(docs.arriveDateTime).format(
-                        'HH:mm:ss',
-                      );
-                      console.log('new ' + newTime);
-                      console.log('old ' + oldTime);
-                      if (newTime !== oldTime) diffObj['time'] = newTime;
-                    } else if (field === 'name') {
-                      diffObj[field] = req.body.name;
-                    } else if (field === 'email') {
-                      diffObj[field] = req.user.email;
-                    } else {
-                      if (user_info[field] !== requesterInfo[field]) {
-                        diffObj[field] = user_info[field];
-                      }
-                    }
-                  }
-                  // console.log(diffObj);
-                  sendToVolunteer(diffObj);
-                  // delete diffObj['volunteerName'];
-                  // delete diffObj["date"];
-                  // delete diffObj["time"];
-                  // diffObj["arriveDateTime"] = req.body.dateTime;
-                  User.findByIdAndUpdate(
-                    userId,
-                    user_info,
-                    { new: true },
-                    (err, changeDoc) => {
-                      if (err) {
-                        console.log(
-                          'volunteer already accepted and insert doc fail ' +
-                            err,
-                        );
-                      } else {
-                        return res.status(200).json({
-                          message:
-                            '系统已收到你更改的接机请求, 并已通过邮箱通知了' +
-                            volunteerInfo.name,
-                          token: newToken,
-                          name: changeDoc.name,
-                        });
-                      }
-                    },
-                  );
-                }
-              },
-            );
+      }
+      if (docs.name === '') {
+        user_info.accepted = false;
+        User.findByIdAndUpdate(
+          userId,
+          user_info,
+          { upsert: true, new: true },
+          (err, firstTimeDoc) => {
+            if (err) {
+              console.log(`first time insert doc fail ${err}`);
+            } else {
+              return res.status(200).json({
+                message: '系统已收到你的接机请求, 请耐心等待志愿者接受你的请求',
+                token: newToken,
+                name: firstTimeDoc.name,
+              });
+            }
+          },
+        );
+      } else if (docs.accepted && docs.volunteerEmail != null) {
+        User.findOne({ email: docs.volunteerEmail }, (err, volunteerInfo) => {
+          if (err) {
+            console.log(`can't find volunteer ${err}`);
           } else {
-            user_info['accepted'] = false;
+            const requester = {
+              requesterEmail: req.user.email,
+              requesterName: docs.name,
+              volunteerName: volunteerInfo.name,
+              name: volunteerInfo.name,
+              email: volunteerInfo.email,
+              contact: volunteerInfo.contact,
+              sex: volunteerInfo.sex,
+              major: volunteerInfo.major,
+              degree: volunteerInfo.degree,
+              car: volunteerInfo.car,
+            };
+            sendToRequester(requester);
+            const requesterInfo = {
+              volunteerName: volunteerInfo.name,
+              volunteerEmail: volunteerInfo.email,
+              name: docs.name,
+              phone: docs.phone,
+              email: docs.email,
+              social: docs.social,
+              date: new Date(docs.arriveDateTime).toLocaleDateString(),
+              time: new Date(docs.arriveDateTime).toLocaleTimeString(),
+              arriveAirport: docs.arriveAirport,
+              hometown: docs.hometown,
+              school: docs.school,
+              degree: docs.degree,
+              luggage: docs.luggage,
+              toVolunteer: docs.toVolunteer,
+            };
+            const diffObj = {};
+            for (const field in requesterInfo) {
+              if (field === 'volunteerEmail' || field === 'volunteerName')
+                diffObj[field] = requesterInfo[field];
+              else if (field === 'date') {
+                const newDate = moment(req.body.dateTime).format('YYYY-MM-DD');
+                const oldDate = moment(docs.arriveDateTime).format(
+                  'YYYY-MM-DD',
+                );
+                console.log(`new ${newDate}`);
+                console.log(`old ${oldDate}`);
+                if (newDate !== oldDate) diffObj[field] = newDate;
+              } else if (field === 'time') {
+                const newTime = moment(req.body.dateTime).format('HH:mm:ss');
+                const oldTime = moment(docs.arriveDateTime).format('HH:mm:ss');
+                console.log(`new ${newTime}`);
+                console.log(`old ${oldTime}`);
+                if (newTime !== oldTime) diffObj.time = newTime;
+              } else if (field === 'name') {
+                diffObj[field] = req.body.name;
+              } else if (field === 'email') {
+                diffObj[field] = req.user.email;
+              } else if (user_info[field] !== requesterInfo[field]) {
+                diffObj[field] = user_info[field];
+              }
+            }
+            // console.log(diffObj);
+            sendToVolunteer(diffObj);
+            // delete diffObj['volunteerName'];
+            // delete diffObj["date"];
+            // delete diffObj["time"];
+            // diffObj["arriveDateTime"] = req.body.dateTime;
             User.findByIdAndUpdate(
               userId,
               user_info,
@@ -493,12 +455,13 @@ router.post('/userInfo', (req, res) => {
               (err, changeDoc) => {
                 if (err) {
                   console.log(
-                    'volunteer not accepted your request and insert doc fail ' +
-                      err,
+                    `volunteer already accepted and insert doc fail ${err}`,
                   );
                 } else {
                   return res.status(200).json({
-                    message: '系统已收到你更改的接机请求',
+                    message: `系统已收到你更改的接机请求, 并已通过邮箱通知了${
+                      volunteerInfo.name
+                    }`,
                     token: newToken,
                     name: changeDoc.name,
                   });
@@ -506,7 +469,27 @@ router.post('/userInfo', (req, res) => {
               },
             );
           }
-        }
+        });
+      } else {
+        user_info.accepted = false;
+        User.findByIdAndUpdate(
+          userId,
+          user_info,
+          { new: true },
+          (err, changeDoc) => {
+            if (err) {
+              console.log(
+                `volunteer not accepted your request and insert doc fail ${err}`,
+              );
+            } else {
+              return res.status(200).json({
+                message: '系统已收到你更改的接机请求',
+                token: newToken,
+                name: changeDoc.name,
+              });
+            }
+          },
+        );
       }
     });
   });

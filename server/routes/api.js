@@ -38,13 +38,13 @@ router.post('/allRequester', (req, res) => {
     });
 });
 
-router.post('/requestStatus', (req, res) => {
-  return res.status(200).json({
+router.post('/requestStatus', (req, res) =>
+  res.status(200).json({
     status: req.user.status,
     // isReq: req.user.name !== "",
     // time: new Date().toLocaleString("en-US")
-  });
-});
+  }),
+);
 
 const transporter = nodemailer.createTransport({
   service: 'qq',
@@ -58,15 +58,15 @@ const transporter = nodemailer.createTransport({
 });
 
 function sendToRequester(locals) {
-  //create the path of email template folder
-  var templateDir = path.join(
+  // create the path of email template folder
+  const templateDir = path.join(
     __dirname,
     '../',
     'mailTemplate',
     'UserNotification',
   );
 
-  var testMailTemplate = new EmailTemplate(templateDir);
+  const testMailTemplate = new EmailTemplate(templateDir);
 
   // let locals = {
   //     userName: "XYZ" //dynamic data for bind into the template
@@ -88,7 +88,7 @@ function sendToRequester(locals) {
             {
               filename: 'cssaQR.png',
               path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-              cid: '../../static/cssaQR.png', //same cid value as in the html img src
+              cid: '../../static/cssaQR.png', // same cid value as in the html img src
             },
           ],
         },
@@ -96,7 +96,7 @@ function sendToRequester(locals) {
           if (error) {
             console.log(error);
           }
-          console.log('Message sent: ' + info.response);
+          console.log(`Message sent: ${info.response}`);
         },
       );
     }
@@ -104,15 +104,15 @@ function sendToRequester(locals) {
 }
 
 function sendToVolunteer(locals) {
-  //create the path of email template folder
-  var templateDir = path.join(
+  // create the path of email template folder
+  const templateDir = path.join(
     __dirname,
     '../',
     'mailTemplate',
     'VolunteerNotification',
   );
 
-  var testMailTemplate = new EmailTemplate(templateDir);
+  const testMailTemplate = new EmailTemplate(templateDir);
 
   // let locals = {
   //     userName: "XYZ" //dynamic data for bind into the template
@@ -134,7 +134,7 @@ function sendToVolunteer(locals) {
             {
               filename: 'cssaQR.png',
               path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-              cid: '../../static/cssaQR.png', //same cid value as in the html img src
+              cid: '../../static/cssaQR.png', // same cid value as in the html img src
             },
           ],
         },
@@ -142,7 +142,7 @@ function sendToVolunteer(locals) {
           if (error) {
             console.log(error);
           }
-          console.log('Message sent: ' + info.response);
+          console.log(`Message sent: ${info.response}`);
         },
       );
     }
@@ -156,19 +156,17 @@ router.post('/cancelRequest', (req, res) => {
       return res.status(409).json({
         message: 'fail',
       });
-    } else {
-      User.findByIdAndUpdate({ _id: req.user._id }, { status: [] }, err => {
-        if (err) {
-          return res.status(500).json({
-            message: err,
-          });
-        } else {
-          return res.status(200).json({
-            message: 'success',
-          });
-        }
-      });
     }
+    User.findByIdAndUpdate({ _id: req.user._id }, { status: [] }, err => {
+      if (err) {
+        return res.status(500).json({
+          message: err,
+        });
+      }
+      return res.status(200).json({
+        message: 'success',
+      });
+    });
   });
 });
 
@@ -184,11 +182,11 @@ router.post('/getVolunteer', (req, res) => {
         newAccessToken: req.newAccessToken,
       });
     })
-    .catch(() => {
-      return res.status(500).json({
+    .catch(() =>
+      res.status(500).json({
         message: '未知错误, 请刷新！',
-      });
-    });
+      }),
+    );
 });
 
 router.post('/acceptRequest', (req, res) => {

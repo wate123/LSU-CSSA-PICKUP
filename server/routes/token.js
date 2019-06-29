@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('mongoose').model('User');
+// const User = require('mongoose').model('User');
 const jwt = require('jsonwebtoken');
 // const config = require('../../config/index');
 const TokenGenerator = require('../middlewares/tokenGen');
@@ -18,7 +18,6 @@ router.post('/genAccessToken', (req, res) => {
     delete decoded.iat;
     delete decoded.exp;
 
-    console.log(decoded);
     const tokenGenerator = new TokenGenerator(process.env.jwtSecret);
     const accessToken = tokenGenerator.sign(decoded, { expiresIn: '1d' });
     return res.status(200).json({ success: true, accessToken, user: decoded });

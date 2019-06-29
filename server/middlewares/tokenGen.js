@@ -1,8 +1,8 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 function TokenGenerator(secretOrPrivateKey, options) {
   this.secretOrPrivateKey = secretOrPrivateKey;
-  this.options = options; //algorithm + keyid + noTimestamp + expiresIn + notBefore
+  this.options = options; // algorithm + keyid + noTimestamp + expiresIn + notBefore
 }
 
 TokenGenerator.prototype.sign = function(payload, signOptions) {
@@ -16,12 +16,12 @@ TokenGenerator.prototype.refresh = function(token, refreshOptions) {
   const payload = jwt.verify(
     token,
     this.secretOrPrivateKey,
-    refreshOptions.verify
+    refreshOptions.verify,
   );
   delete payload.iat;
   delete payload.exp;
   delete payload.nbf;
-  delete payload.jti; //We are generating a new token, if you are using jwtid during signing, pass it in refreshOptions
+  delete payload.jti; // We are generating a new token, if you are using jwtid during signing, pass it in refreshOptions
   const jwtSignOptions = Object.assign({}, this.options);
   // The first signing converted all needed options into claims, they are already in the payload
   return jwt.sign(payload, this.secretOrPrivateKey, jwtSignOptions);
