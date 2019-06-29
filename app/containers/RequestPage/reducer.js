@@ -3,9 +3,7 @@
  * RequestPage reducer
  *
  */
-import React from 'react';
 import produce from 'immer';
-import { notification, Icon } from 'antd';
 import {
   SUBMIT_REQUEST,
   SUBMIT_REQUEST_CONFIRMED,

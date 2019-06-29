@@ -1,10 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 /*
  *
  * VolunteerPortal reducer
  *
  */
 import produce from 'immer';
-import { notification } from 'antd';
 import {
   GET_REQUESTER_DATA,
   GET_REQUESTER_DATA_SUCCESS,

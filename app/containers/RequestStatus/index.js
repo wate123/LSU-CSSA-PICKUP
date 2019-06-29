@@ -7,10 +7,9 @@
 import React, { useEffect } from 'react';
 
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import io from 'socket.io-client';
@@ -26,13 +25,8 @@ import {
 } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
-import {
-  cancelRequest,
-  getRequestStatus,
-  getVolunteerDetail,
-  toggleDrawer,
-} from './actions';
+// import messages from './messages';
+import { cancelRequest, getRequestStatus, getVolunteerDetail } from './actions';
 import { API_ROOT } from '../../../config/api-config';
 
 import RequestStatusCom from '../../components/RequestStatus';
@@ -43,8 +37,6 @@ const socket = io(API_ROOT, { secure: true });
 export function RequestStatus({
   isRequestExist,
   cancelRequestAction,
-  isLoggedIn,
-  checkAccessTokenExpire,
   RequestStatus,
   requestForStatus,
   toggleDrawer,
@@ -85,6 +77,12 @@ export function RequestStatus({
 RequestStatus.propTypes = {
   cancelRequestAction: PropTypes.func.isRequired,
   isRequestExist: PropTypes.bool.isRequired,
+  RequestStatus: PropTypes.array,
+  requestForStatus: PropTypes.func,
+  toggleDrawer: PropTypes.func,
+  volunteerDetail: PropTypes.object,
+  isDrawerVisible: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({

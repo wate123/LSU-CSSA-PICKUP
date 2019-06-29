@@ -6,13 +6,13 @@
 
 import React, { memo } from 'react';
 // import PropTypes from 'prop-types';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+// import { FormattedMessage } from 'react-intl';
 import LogRegister from 'containers/LogRegister';
+// import messages from './messages';
 
 function Navbar() {
   return (

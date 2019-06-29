@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /**
  *
  * LoginForm
@@ -7,10 +10,11 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Form, Input, Button, Checkbox } from 'antd';
-import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import { Form, Input, Button, Modal } from 'antd';
+const shortid = require('shortid');
+// import { Link } from 'react-router-dom';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -22,7 +26,13 @@ const formItemLayout = {
   },
 };
 
-function LoginForm({ form, onSubmitLogin, toggleRegister }) {
+function LoginForm({
+  form,
+  onSubmitLogin,
+  toggleRegister,
+  toggleLogin,
+  isLoginModelOpen,
+}) {
   const { getFieldDecorator } = form;
   const submitLogin = e => {
     e.preventDefault();
@@ -36,69 +46,73 @@ function LoginForm({ form, onSubmitLogin, toggleRegister }) {
     });
   };
   return (
-    <Form className="login-form" layout="horizontal" onSubmit={submitLogin}>
-      <FormItem {...formItemLayout} label="邮箱">
-        {getFieldDecorator('email', {
-          rules: [
-            {
-              type: 'email',
-              message: '错误邮箱地址!',
-            },
-            {
-              required: true,
-              message: '请输入邮箱地址!',
-            },
-          ],
-        })(<Input />)}
-      </FormItem>
-      <FormItem {...formItemLayout} label="密码">
-        {getFieldDecorator('password', {
-          rules: [
-            {
-              required: true,
-              message: '请输入你的密码!',
-            },
-          ],
-        })(<Input type="password" />)}
-      </FormItem>
-      <FormItem
-        wrapperCol={{
-          sm: {
-            span: 18,
-            offset: 3,
-          },
-        }}
+    <Modal
+      visible={isLoginModelOpen}
+      mask
+      destroyOnClose
+      title="登录"
+      onCancel={() => toggleLogin()}
+      footer=""
+    >
+      <Form
+        id={shortid.generate()}
+        className="login-form"
+        layout="horizontal"
+        onSubmit={submitLogin}
       >
-        {/* {getFieldDecorator('remember', {
-          valuePropName: 'checked',
-          initialValue: true,
-        })(<Checkbox>记住我</Checkbox>)} */}
-        <a className="login-form-forgot">忘记密码？</a>
-      </FormItem>
-      <FormItem
-        wrapperCol={{
-          xs: {
-            span: 26,
-            offset: 0,
-          },
-          sm: {
-            span: 18,
-            offset: 3,
-          },
-        }}
-      >
-        <Button className="ant-col-24" type="primary" htmlType="submit">
-          登录
-        </Button>
-        或者 <a onClick={toggleRegister}>现在注册!</a>
-      </FormItem>
-    </Form>
+        <FormItem {...formItemLayout} label="邮箱">
+          {getFieldDecorator('email', {
+            rules: [
+              {
+                type: 'email',
+                message: '错误邮箱地址!',
+              },
+              {
+                required: true,
+                message: '请输入邮箱地址!',
+              },
+            ],
+          })(<Input id={shortid.generate()} />)}
+        </FormItem>
+        <FormItem {...formItemLayout} label="密码">
+          {getFieldDecorator('password', {
+            rules: [
+              {
+                required: true,
+                message: '请输入你的密码!',
+              },
+            ],
+          })(<Input id={shortid.generate()} type="password" />)}
+        </FormItem>
+
+        <FormItem
+          wrapperCol={{
+            xs: {
+              span: 26,
+              offset: 0,
+            },
+            sm: {
+              span: 18,
+              offset: 3,
+            },
+          }}
+        >
+          <a className="login-form-forgot">忘记密码？</a>
+          <div />
+          <Button className="ant-col-24" type="primary" htmlType="submit">
+            登录
+          </Button>
+          或者 <a onClick={toggleRegister}>现在注册!</a>
+        </FormItem>
+      </Form>
+    </Modal>
   );
 }
 
 LoginForm.propTypes = {
   form: PropTypes.object.isRequired,
   onSubmitLogin: PropTypes.func.isRequired,
+  toggleRegister: PropTypes.func.isRequired,
   // onLoginSubmitted: PropTypes.func.isRequired,
 };
 

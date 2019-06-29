@@ -13,6 +13,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+// import ReactGA from 'react-ga';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 
@@ -37,7 +38,10 @@ import { translationMessages } from './i18n';
 const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
-
+// const initializeReactGA = () => {
+//   ReactGA.initialize('UA-141495481-1');
+//   ReactGA.pageview('/');
+// };
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>

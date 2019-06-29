@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Modal, List } from 'antd';
 
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
@@ -19,7 +19,7 @@ import { push } from 'connected-react-router';
 import { makeSelectVolunteerError, makeSelectVolunteerData } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
+// import messages from './messages';
 import VolunteerForm from '../../components/VolunteerForm';
 import { makeSelectisLoggedIn } from '../LogRegister/selectors';
 import { submitRequest, submitVolunteerAfterConfirm } from './actions';

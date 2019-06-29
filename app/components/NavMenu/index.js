@@ -15,25 +15,23 @@ import PropTypes from 'prop-types';
 
 function NavMenu({
   logoutAction,
-  isLoggedIn,
+  // isLoggedIn,
   userInfo,
   location,
   toVolunteerPortal,
   toHome,
   toRequestStatus,
 }) {
-  const LoggedDropDown = () => {
-    return (
-      <Menu onClick={logoutAction}>
-        <Menu.Item key="exit">
-          <Link to="/">
-            <Icon style={{ textAlign: 'left' }} type="logout" />
-            注销{' '}
-          </Link>
-        </Menu.Item>
-      </Menu>
-    );
-  };
+  const LoggedDropDown = () => (
+    <Menu onClick={logoutAction}>
+      <Menu.Item key="exit">
+        <Link to="/">
+          <Icon style={{ textAlign: 'left' }} type="logout" />
+          注销{' '}
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
   console.log(userInfo.isVolunteer);
   return (
     <React.Fragment>
@@ -74,7 +72,11 @@ function NavMenu({
 
 NavMenu.propTypes = {
   logoutAction: PropTypes.func.isRequired,
-  isVolunteer: PropTypes.bool,
+  // isVolunteer: PropTypes.bool,
+  location: PropTypes.object,
+  toVolunteerPortal: PropTypes.func,
+  toHome: PropTypes.func,
+  toRequestStatus: PropTypes.func,
   userInfo: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 

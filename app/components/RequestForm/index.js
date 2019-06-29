@@ -22,12 +22,10 @@ import {
   Button,
   Checkbox,
   TimePicker,
-  Modal,
-  List,
 } from 'antd';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -97,7 +95,6 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
     const userSelectDate = form.getFieldValue('date').startOf('day');
     const todayWithoutTime = new Date(new Date().toDateString());
     const twoHourAfter = new Date().setHours(new Date().getHours() + 2);
-    console.log(value.isBefore(twoHourAfter));
     if (
       userSelectDate.isSame(todayWithoutTime) &&
       value.isBefore(twoHourAfter)

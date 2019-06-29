@@ -1,17 +1,17 @@
+/* eslint-disable no-underscore-dangle */
 /**
  *
  * DisplayRequests
  *
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Modal, notification, Icon } from 'antd';
+import { Table, Modal } from 'antd';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-const shortid = require('shortid');
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 
 const columns = [
   {
@@ -53,12 +53,11 @@ const columns = [
   {
     title: '到达时间(美国中部时间)',
     dataIndex: 'arriveDateTime',
-    render: time => {
-      return new Date(time)
+    render: time =>
+      new Date(time)
         .toISOString()
         .replace(/T/, ' ')
-        .replace(/\..+/, '');
-    },
+        .replace(/\..+/, ''),
   },
   {
     title: '想对志愿者说',
@@ -70,18 +69,6 @@ const { confirm } = Modal;
 
 function DisplayRequests({ requestsData, loading, acceptRequest }) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  // useEffect(() => {
-  //   if (loading) {
-  //     dispatchGetRequesterData();
-  //   }
-  // }, [dispatchGetRequesterData]);
-  // dispatchGetRequesterData();
-  // handleTableChange = () => {};
-  // const updateRowKeys =  => {
-  //   setSelectedRowKeys({
-  //     selectedRowKeys: e.target.value,
-  //   });
-  // };
 
   const onSelectRow = userData => {
     confirm({
@@ -90,7 +77,6 @@ function DisplayRequests({ requestsData, loading, acceptRequest }) {
         <div>请慎重接受接机请求, 接受后双方将会收到关于对方信息的邮件.</div>
       ),
       onOk() {
-        console.log(userData._id);
         acceptRequest(userData._id);
         // return new Promise((resolve, reject) => {
         //   axios({
@@ -126,9 +112,10 @@ function DisplayRequests({ requestsData, loading, acceptRequest }) {
   };
   if (requestsData !== false) {
     // requestsData = { ...requestsData, key: requestsData._id };
-    const requestDataWithKey = requestsData.map(val => {
-      return { key: val._id, ...val };
-    });
+    const requestDataWithKey = requestsData.map(val => ({
+      key: val._id,
+      ...val,
+    }));
 
     return (
       <div className="request-table">
@@ -167,6 +154,7 @@ function DisplayRequests({ requestsData, loading, acceptRequest }) {
 DisplayRequests.propTypes = {
   requestsData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   loading: PropTypes.bool,
+  acceptRequest: PropTypes.func,
 };
 
 export default DisplayRequests;

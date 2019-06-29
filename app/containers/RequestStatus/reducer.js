@@ -4,7 +4,6 @@
  *
  */
 import produce from 'immer';
-import { notification } from 'antd';
 import {
   CANCEL_REQUEST_SUCCESS,
   CANCEL_REQUEST_ERROR,
@@ -14,7 +13,6 @@ import {
   GET_VOLUNTEER_DETAIL,
   TOGGLE_DRAWER,
 } from './constants';
-import Auth from '../../utils/Auth';
 
 export const initialState = {
   isRequestExist: false,

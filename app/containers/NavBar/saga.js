@@ -46,6 +46,8 @@ const options = typeToken => ({
   },
   credentials: 'omit',
 });
+console.log(requestRootURL);
+
 const optionsWithBody = formData => ({
   method: 'POST',
   body: formData,
@@ -68,7 +70,20 @@ export function* loginDataSubmit(action) {
       optionsWithBody(loginFormData),
     );
     yield put(loginSubmittedSuccess(response));
-    yield put(loginSuccessNotification());
+    // yield put(loginSuccessNotification());
+    const hrs = new Date().getHours();
+    let greet = '你好,小彩蛋';
+    if (hrs < 12) greet = '早上好!';
+    else if (hrs >= 12 && hrs <= 17) greet = '下午好!';
+    else if (hrs >= 17 && hrs <= 24) greet = '晚上好!';
+    notification.success({
+      message: `${greet} ${
+        sessionStorage.getItem('name')
+          ? sessionStorage.getItem('name')
+          : sessionStorage.getItem('email')
+      }`,
+      // icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+    });
   } catch (err) {
     if (err.response.status === 401) {
       yield notification.error({ message: '密码错误' });
@@ -92,7 +107,12 @@ export function* registerDataSubmit(action) {
       optionsWithBody(registerFormData),
     );
     yield putResolve(registerSubmittedSuccess(response));
-    yield put(registerSuccessNotification());
+    // yield put(registerSuccessNotification());
+    notification.success({
+      message: '欢迎使用CSSA接机系统',
+      description: '请尽快完善你的信息',
+      // icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+    });
     yield put(onLoginSubmit(action.userCredentials));
   } catch (err) {
     if (err.response.status === 409) {
@@ -119,6 +139,7 @@ export function* checkExpire(action) {
       );
       yield put(renewAccessToken(renewResponse));
     } catch {
+      notification.error({ message: '已超时请重新登录' });
       yield put(renewAccessTokenFail());
       // yield put(reloginNotification());
       yield put(push('/'));

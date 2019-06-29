@@ -11,26 +11,20 @@ import {
   Input,
   Tooltip,
   Icon,
-  Select,
   Row,
   Col,
   Checkbox,
   Button,
   Radio,
-  Modal,
-  List,
-  notification,
 } from 'antd';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 
 const FormItem = Form.Item;
-const { Option } = Select;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
-const { confirm } = Modal;
 let checkJoin = false;
 
 const formItemLayout = {
@@ -73,7 +67,7 @@ function VolunteerForm({
   form,
   onSubmitRequest,
   onAfterConfirm,
-  volunteerData,
+  // volunteerData,
 }) {
   const { getFieldDecorator } = form;
 
@@ -169,9 +163,19 @@ function VolunteerForm({
             )}
           </FormItem>
           <FormItem
+            labelCol={{
+              xs: { justify: 'end', span: 24 },
+              sm: { justify: 'end', span: 10 },
+            }}
             wrapperCol={{
-              xs: { span: 24, offset: 8 },
-              sm: { span: 24, offset: 8 },
+              xs: {
+                span: 24,
+                offset: 0,
+              },
+              sm: {
+                span: 16,
+                offset: 8,
+              },
             }}
           >
             {getFieldDecorator('joinmail', {

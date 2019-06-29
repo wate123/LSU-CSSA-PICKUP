@@ -6,10 +6,9 @@
 
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Modal, notification, Icon } from 'antd';
 
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import io from 'socket.io-client';
@@ -25,7 +24,7 @@ import reducer from './reducer';
 import saga from './saga';
 import { API_ROOT } from '../../../config/api-config';
 
-import messages from './messages';
+// import messages from './messages';
 import DisplayRequests from '../../components/DisplayRequests';
 import { getRequesterData, acceptRequest } from './actions';
 
@@ -35,7 +34,6 @@ export function VolunteerPortal({
   requestsData,
   loading,
   acceptRequest,
-  isAccessTokenExpired,
 }) {
   useInjectReducer({ key: 'volunteerPortal', reducer });
   useInjectSaga({ key: 'volunteerPortal', saga });
@@ -65,6 +63,7 @@ export function VolunteerPortal({
 
 VolunteerPortal.propTypes = {
   dispatchGetRequesterData: PropTypes.func.isRequired,
+  acceptRequest: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   requestsData: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
 };

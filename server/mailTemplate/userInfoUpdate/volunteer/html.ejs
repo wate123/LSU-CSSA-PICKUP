@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>接机系统通知</title>
+    <style>
+        /* -------------------------------------
+            INLINED WITH htmlemail.io/inline
+        ------------------------------------- */
+        /* -------------------------------------
+            RESPONSIVE AND MOBILE FRIENDLY STYLES
+        ------------------------------------- */
+        @media only screen and (max-width: 620px) {
+            table[class=body] h1 {
+                font-size: 28px !important;
+                margin-bottom: 10px !important;
+            }
+            table[class=body] p,
+            table[class=body] ul,
+            table[class=body] ol,
+            table[class=body] td,
+            table[class=body] span,
+            table[class=body] a {
+                font-size: 16px !important;
+            }
+            table[class=body] .wrapper,
+            table[class=body] .article {
+                padding: 10px !important;
+            }
+            table[class=body] .content {
+                padding: 0 !important;
+            }
+            table[class=body] .container {
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            table[class=body] .main {
+                border-left-width: 0 !important;
+                border-radius: 0 !important;
+                border-right-width: 0 !important;
+            }
+            table[class=body] .btn table {
+                width: 100% !important;
+            }
+            table[class=body] .btn a {
+                width: 100% !important;
+            }
+            table[class=body] .img-responsive {
+                height: auto !important;
+                max-width: 100% !important;
+                width: auto !important;
+            }
+        }
+
+        /* -------------------------------------
+            PRESERVE THESE STYLES IN THE HEAD
+        ------------------------------------- */
+        @media all {
+            .ExternalClass {
+                width: 100%;
+            }
+            .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+                line-height: 100%;
+            }
+            .apple-link a {
+                color: inherit !important;
+                font-family: inherit !important;
+                font-size: inherit !important;
+                font-weight: inherit !important;
+                line-height: inherit !important;
+                text-decoration: none !important;
+            }
+            .btn-primary table td:hover {
+                background-color: #34495e !important;
+            }
+            .btn-primary a:hover {
+                background-color: #34495e !important;
+                border-color: #34495e !important;
+            }
+        }
+    </style>
+</head>
+<body class="" style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+<table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: #f6f6f6;">
+    <p>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
+        <td class="container" style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;">
+            <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;">
+
+                <!-- START CENTERED WHITE CONTAINER -->
+                <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;"><%=name%>更新了她（他）的接机申请</span>
+                <div class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;">
+
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">你好 <%=volunteerName%>,</p>
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><%=name%>更新她（他）的接机申请, 以下是他(她)更改的地方</p>
+                    <%if (locals.name){%>
+                    <p>姓名： <%=name%></p>
+                    <%}%>
+                    <%if (locals.school){%>
+                    <p>毕业学校： <%=school%></p>
+                    <%}%>
+                    <%if (locals.phone){%>
+                    <p>电话号码： <%=phone%></p>
+                    <%}%>
+                    <%if (locals.social){%>
+                    <p>社交平台： <%=social%></p>
+                    <%}%>
+                    <%if (locals.arriveAirport){%>
+                    <p>抵达机场： <%=arriveAirport%></p>
+                    <%}%>
+                    <%if (locals.date){%>
+                    <p>抵达日期： <%=date%> (美国中部时间）</p>
+                    <%}%>
+                    <%if (locals.time){%>
+                    <p>抵达时间： <%=time%> (美国中部时间）</p>
+                    <%}%>
+                    <%if (locals.luggage){%>
+                    <p>行李数量： <%=luggage%></p>
+                    <%}%>
+                    <%if (locals.toVolunteer){%>
+                    <p>想对志愿者说： <%=toVolunteer%></p>
+                    <%}%>
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">如果有任何接机方面的改动（接机时间和地点等等）, 请尽快联系<%=name%>!</p>
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">请大家慎重接受任何接机请求以避免出现不必要的麻烦. 如果你发现了任何bug, 系统问题或者可以改进的地方, 请直接回复此邮箱.</p>
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">最后, 欢迎大家使用由LSU-CSSA网络部提供的接机系统.</p>
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Geaux Tigers!</p>
+                    </br>
+                    </br>
+                    <li>微信公众平台：CSSALSU</li>
+                    <li>申请加入万能的CSSA Mailing List方法：发送空白标题以及正文 <mark>SUBSCRIBE CSSA-L <strong>你的名字</strong></mark> 至 LISTSERV@LISTSERV.LSU.EDU</li>
+                    <li>微博：路易斯安娜州立大学CSSA</li>
+                    <li>网站：lsucssa.com（已上线，欢迎测试）</li>
+                    <li>人人网：已停止更新</li>
+
+                    <!-- END MAIN CONTENT AREA -->
+                </div>
+
+                <!-- START FOOTER -->
+                <div class="footer" style="clear: both; Margin-top: 10px; text-align: center; width: 100%;">
+                    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+                        <tr>
+                            <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;">
+                                <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">LSU Chinese Student and Scholar Association</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;">
+                                Powered by <a style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">LSU CSSA网络部</a>.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- END FOOTER -->
+
+                <!-- END CENTERED WHITE CONTAINER -->
+            </div>
+        </td>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">&nbsp;</td>
+    </tr>
+</table>
+</body>
+</html>

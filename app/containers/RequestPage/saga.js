@@ -5,17 +5,12 @@ import { notification, Icon } from 'antd';
 import io from 'socket.io-client';
 
 import Auth from '../../utils/Auth';
-import { SUBMIT_REQUEST, SUBMIT_REQUEST_CONFIRMED } from './constants';
+import { SUBMIT_REQUEST_CONFIRMED } from './constants';
 import { API_ROOT } from '../../../config/api-config';
 import request from '../../utils/request';
 
-import {
-  submitRequestError,
-  submitRequestSuccessful,
-  submitRequestAfterConfirm,
-} from './actions';
-import { generateAccessToken } from '../LogRegister/actions';
-import { getRequesterData } from '../VolunteerPortal/actions';
+import { submitRequestError } from './actions';
+
 import { unknownServerError } from '../App/actions';
 const socket = io(API_ROOT, { secure: true });
 

@@ -4,65 +4,62 @@
  *
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router';
-import { FormattedMessage } from 'react-intl';
-import { Row, Col, Card, Button, Popover } from 'antd';
+// import { FormattedMessage } from 'react-intl';
+import { Row, Col, Card, Button, Popover, Menu } from 'antd';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectHome from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
+// import messages from './messages';
 import LogRegister from '../LogRegister';
 import {
   makeSelectisLoggedIn,
   makeSelectisVolunteer,
   makeSelectuserInfo,
 } from '../LogRegister/selectors';
+import { toggleLoginModal, toggleRegisterModal } from '../LogRegister/actions';
 
-export function Home({
-  isLoggedIn,
-  toPickupRequestPage,
-  toVolunteerPage,
-  isVolunteer,
-  userInfo,
-}) {
+export function Home({ isLoggedIn, userInfo, toggleLogin, toggleRegister }) {
   useInjectReducer({ key: 'home', reducer });
   useInjectSaga({ key: 'home', saga });
   const [isVisible, setVisibility] = useState(false);
   // if (isLoggedIn) {
   //   setVisibility(!isVisible);
   // }
-  const SwitchUserButton = () => {
-    return (
-      <Row type="flex" justify="center" gutter={{ xs: 8, sm: 16, md: 24 }}>
-        {userInfo.isVolunteer ? (
-          <Col>
-            <Link to="beVolunteer">
-              <Button type="primary" shape="round">
-                成为志愿者
-              </Button>
-            </Link>
-          </Col>
-        ) : (
-          <Col>
-            <Link to="pickupRequest">
-              <Button type="primary" shape="round">
-                申请接机
-              </Button>
-            </Link>
-          </Col>
-        )}
-      </Row>
-    );
-  };
+  const SwitchUserButton = () => (
+    <Row
+      type="flex"
+      justify="center"
+      gutter={{ xs: 8, sm: 16, md: 24 }}
+      style={{ padding: '50px' }}
+    >
+      {userInfo.isVolunteer ? (
+        <Col>
+          <Link to="beVolunteer">
+            <Button type="primary" shape="round">
+              成为志愿者
+            </Button>
+          </Link>
+        </Col>
+      ) : (
+        <Col>
+          <Link to="pickupRequest">
+            <Button type="primary" shape="round">
+              申请接机
+            </Button>
+          </Link>
+        </Col>
+      )}
+    </Row>
+  );
   return (
     <React.Fragment>
       <Row type="flex" justify="center" gutter={{ xs: 8, sm: 16, md: 24 }}>
@@ -78,9 +75,14 @@ export function Home({
           justify="space-around"
           gutter={{ xs: 8, sm: 16, md: 24 }}
         >
-          <Col>
+          <Col style={{ padding: '50px' }}>
             <Popover
-              content={<LogRegister />}
+              content={
+                <div>
+                  <Button onClick={toggleLogin}>登录</Button>
+                  <Button onClick={toggleRegister}>注册</Button>
+                </div>
+              }
               title="请先登陆或者注册"
               visible={isVisible}
               onVisibleChange={() => setVisibility(!isVisible)}
@@ -90,9 +92,14 @@ export function Home({
               </Button>
             </Popover>
           </Col>
-          <Col>
+          <Col style={{ padding: '50px' }}>
             <Popover
-              content={<LogRegister />}
+              content={
+                <div>
+                  <Button onClick={toggleLogin}>登录</Button>
+                  <Button onClick={toggleRegister}>注册</Button>
+                </div>
+              }
               title="请先登陆或者注册"
               visible={isVisible}
               onVisibleChange={() => setVisibility(!isVisible)}
@@ -106,60 +113,13 @@ export function Home({
       ) : (
         <SwitchUserButton />
       )}
-      {/* {isVolunteer ? null : (
-        <Row
-          type="flex"
-          justify="space-around"
-          gutter={{ xs: 8, sm: 16, md: 24 }}
-        >
-          <Col>
-            {isLoggedIn ? (
-              <Link to="pickupRequest">
-                <Button type="primary" shape="round">
-                  申请接机
-                </Button>
-              </Link>
-            ) : (
-              <Popover
-                content={<LogRegister />}
-                title="请先登陆或者注册"
-                visible={isVisible}
-                onVisibleChange={() => setVisibility(!isVisible)}
-              >
-                <Button type="primary" shape="round">
-                  申请接机
-                </Button>
-              </Popover>
-            )}
-          </Col>
-          <Col>
-            {isLoggedIn ? (
-              <Link to="beVolunteer">
-                <Button type="primary" shape="round">
-                  成为志愿者
-                </Button>
-              </Link>
-            ) : (
-              <Popover
-                content={<LogRegister />}
-                title="请先登陆或者注册"
-                visible={isVisible}
-                onVisibleChange={() => setVisibility(!isVisible)}
-              >
-                <Button type="primary" shape="round">
-                  成为志愿者
-                </Button>
-              </Popover>
-            )}
-          </Col>
-        </Row>
-      )} */}
     </React.Fragment>
   );
 }
 
 Home.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
+  userInfo: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -170,11 +130,15 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    toPickupRequestPage: evt => {
+    toggleLogin: () => {
+      dispatch(toggleLoginModal());
+    },
+    toggleRegister: () => dispatch(toggleRegisterModal()),
+    toPickupRequestPage: () => {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(push('/pickupRequest'));
     },
-    toVolunteerPage: evt => {
+    toVolunteerPage: () => {
       // if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(push('/beVolunteer'));
     },

@@ -3,10 +3,8 @@
  * LogRegister reducer
  *
  */
-import React from 'react';
 import produce from 'immer';
-import _ from 'lodash';
-import { message, Icon, notification } from 'antd';
+import { message, notification } from 'antd';
 import {
   TOGGLE_LOGIN_MODAL,
   TOGGLE_REGISTER_MODAL,
@@ -16,8 +14,6 @@ import {
   REGISTER_SUBMIT_SUCCESS,
   REGISTER_SUBMIT_ERROR,
   LOGIN_SUBMIT_ERROR,
-  GENERATE_ACCESS_TOKEN,
-  SAVE_ACCESS_TOKEN,
   GET_USER_DATA_IN_STORAGE,
   LOGOUT,
   INVALID_REFRESH_TOKEN,

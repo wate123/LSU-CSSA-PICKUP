@@ -21,7 +21,6 @@ module.exports = require('./webpack.base.babel')({
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].chunk.js',
   },
-
   optimization: {
     minimize: true,
     minimizer: [
@@ -83,7 +82,6 @@ module.exports = require('./webpack.base.babel')({
       },
       inject: true,
     }),
-
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
     new OfflinePlugin({

@@ -5,23 +5,14 @@
  */
 
 import React, { useState } from 'react';
-import {
-  Timeline,
-  Col,
-  Row,
-  Drawer,
-  Divider,
-  Button,
-  notification,
-  Skeleton,
-} from 'antd';
+import { Timeline, Col, Row, Drawer, Button, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import styled from 'styled-components';
+// import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 const shortid = require('shortid');
 
 const pStyle = {
@@ -32,31 +23,28 @@ const pStyle = {
   marginBottom: 16,
 };
 
-const DescriptionItem = ({ title, content }) => {
-  return (
-    <div
+const DescriptionItem = ({ title, content }) => (
+  <div
+    style={{
+      fontSize: 14,
+      lineHeight: '22px',
+      marginBottom: 7,
+      color: 'rgba(0,0,0,0.65)',
+    }}
+  >
+    <p
       style={{
-        fontSize: 14,
-        lineHeight: '22px',
-        marginBottom: 7,
-        color: 'rgba(0,0,0,0.65)',
+        marginRight: 8,
+        display: 'inline-block',
+        color: 'rgba(0,0,0,0.85)',
       }}
     >
-      <p
-        style={{
-          marginRight: 8,
-          display: 'inline-block',
-          color: 'rgba(0,0,0,0.85)',
-        }}
-      >
-        {title}:
-      </p>
-      {content}
-    </div>
-  );
-};
+      {title}:
+    </p>
+    {content}
+  </div>
+);
 function RequestStatusForm({
-  isRequestExist,
   // changeRequestInfo,
   loading,
   cancelRequestAction,
@@ -225,7 +213,11 @@ function RequestStatusForm({
 }
 
 RequestStatusForm.propTypes = {
-  isRequestExist: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  isDrawerVisible: PropTypes.bool,
+  volunteerDetail: PropTypes.object,
+  toggleDrawer: PropTypes.func,
+  RequestStatus: PropTypes.func,
   cancelRequestAction: PropTypes.func.isRequired,
 };
 

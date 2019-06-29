@@ -1,14 +1,12 @@
-import { take, call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { notification } from 'antd';
+import { push } from 'connected-react-router';
 import Auth from '../../utils/Auth';
 import { API_ROOT } from '../../../config/api-config';
 import request from '../../utils/request';
 import {
   cancelRequestSuccess,
-  cancelRequestError,
   passRequestStatusData,
-  getRequestStatusError,
-  getRequestStatus,
   getVolunteerDetailSuccess,
   getVolunteerDetailError,
 } from './actions';
@@ -16,11 +14,9 @@ import {
   CANCEL_REQUEST,
   GET_REQUEST_STATUS,
   GET_VOLUNTEER_DETAIL,
-  TOGGLE_DRAWER,
 } from './constants';
-import { generateAccessToken, logout } from '../LogRegister/actions';
-import { reloginNotification, unknownServerError } from '../App/actions';
-import { push } from 'connected-react-router';
+import { logout } from '../LogRegister/actions';
+import { unknownServerError } from '../App/actions';
 
 const requestRootURL = `${API_ROOT}`;
 const options = typeToken => ({
@@ -35,7 +31,7 @@ const options = typeToken => ({
   credentials: 'omit',
 });
 
-export function* cancelRequest(actions) {
+export function* cancelRequest() {
   const requestURL = `${requestRootURL}/api/cancelRequest`;
   try {
     const response = yield call(request, requestURL, options('accessToken'));
@@ -61,7 +57,7 @@ export function* cancelRequest(actions) {
     // yield put(generateAccessToken());
   }
 }
-export function* RequestStatus(actions) {
+export function* RequestStatus() {
   const requestURL = `${requestRootURL}/api/requestStatus`;
   try {
     const response = yield call(request, requestURL, options('accessToken'));
@@ -84,7 +80,7 @@ export function* RequestStatus(actions) {
   }
 }
 
-export function* getVolunteerInfo(action) {
+export function* getVolunteerInfo() {
   const requestURL = `${requestRootURL}/api/getVolunteer`;
   try {
     const response = yield call(request, requestURL, options('accessToken'));

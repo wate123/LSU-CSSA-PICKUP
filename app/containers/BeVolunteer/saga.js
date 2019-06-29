@@ -1,15 +1,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import Auth from '../../utils/Auth';
-import {
-  SUBMIT_REQUEST,
-  SUBMIT_REQUEST_CONFIRMED,
-  SUBMIT_VOLUNTEER_CONFIRMED,
-} from './constants';
+import { SUBMIT_VOLUNTEER_CONFIRMED } from './constants';
 import { API_ROOT } from '../../../config/api-config';
 import request from '../../utils/request';
 import { submitVolunteerError, submitVolunteerSuccessful } from './actions';
-import { generateAccessToken } from '../LogRegister/actions';
+// import { generateAccessToken } from '../LogRegister/actions';
 const requestRootURL = `${API_ROOT}`;
 const options = formData => ({
   method: 'POST',
@@ -56,7 +52,7 @@ export function* requestDataSubmit(action) {
   } catch (err) {
     if (err.status === 401) {
       try {
-        yield put(generateAccessToken());
+        // yield put(generateAccessToken());
         yield call(request, requestURL, options(requestFormData));
       } catch (errs) {
         yield put(submitVolunteerError(errs));

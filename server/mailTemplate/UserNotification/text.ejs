@@ -1,0 +1,36 @@
+你好 <%=requesterName%>,
+
+<%=name%>已接受了你的接机请求, 以下是他(她)的个人信息
+
+姓名： <%=name%>
+性别： <%=sex%>
+邮箱： <%=email%>
+联系方式： <%=contact%>
+<%if (locals.major || locals.major !== "undefined"){%>
+专业： <%=major%>
+<%}%>
+<%if (locals.degree || locals.degree !== "undefined"){%>
+攻读学位： <%=degree%>
+<%}%>
+<%if (locals.car || locals.car !== "undefined"){%>
+车型： <%=car%>
+<%}%>
+
+
+<%if (sleep ==='yes') {%>
+根据你的信息显示, 你需要临时住宿. 我们推荐同学们提前联系,如果仍旧没有找到合适临时住宿,可以到学校ICC的临时宿舍（10刀一天）链接如下：http://www.lsu.edu/intlpro/icc/housing.php ICC不接受提前预定,先到先有床位.
+<%}%>
+
+如果有任何接机方面的改动(接机时间和地点等等)或者突发事件, 比如航班改签等, 请尽快联系<%=name%>进行调整或者重新申请!
+
+请大家不要反复提交重复的接机申请. 如果你发现了任何bug或者可以改进的地方, 请直接回复此邮箱.
+
+最后, 欢迎大家使用由LSU-CSSA提供的接机系统并欢迎大家来到LSU.
+
+Geaux Tigers!
+
+微信公众平台：CSSALSU
+加入万能的CSSA Mailing List方法：发送空白标题以及正文 SUBSCRIBE CSSA-L 你的名字 至 LISTSERV@LISTSERV.LSU.EDU
+微博：路易斯安娜州立大学CSSA
+网站：lsucssa.com（已上线，欢迎测试）
+人人网：已停止更新

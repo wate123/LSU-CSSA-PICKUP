@@ -7,7 +7,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Modal, Menu, Button, Icon, notification, Dropdown } from 'antd';
+import { Modal, Menu } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -48,48 +48,39 @@ export function LogRegister({
   useInjectReducer({ key: 'logRegister', reducer });
   useInjectSaga({ key: 'logRegister', saga });
 
-  const loginProps = { onSubmitLogin, toggleRegister };
-  const registerProps = { onSubmitRegister, toggleLogin };
+  const loginProps = {
+    isLoginModelOpen,
+    toggleLogin,
+    onSubmitLogin,
+    toggleRegister,
+  };
+  const registerProps = {
+    isRegisterModelOpen,
+    toggleRegister,
+    onSubmitRegister,
+    toggleLogin,
+  };
 
   // if(!Auth.isUserAuthenticated())
   return (
-    <React.Fragment>
-      <Menu
-        theme="light"
-        mode="horizontal"
-        style={{ lineHeight: '64px', borderBottom: '0px', float: 'right' }}
-      >
-        <Menu.Item>
-          <a type="link" onClick={() => toggleLogin()}>
-            <FormattedMessage {...messages.login} />
-          </a>
-          <Modal
-            visible={isLoginModelOpen}
-            destroyOnClose
-            title="登录"
-            onCancel={() => toggleLogin()}
-            footer=""
-          >
-            <LoginForm {...loginProps} />
-          </Modal>
-        </Menu.Item>
-        <Menu.Item>
-          <a type="link" onClick={() => toggleRegister()}>
-            <FormattedMessage {...messages.register} />
-          </a>
-
-          <Modal
-            visible={isRegisterModelOpen}
-            destroyOnClose
-            title="注册"
-            onCancel={() => toggleRegister()}
-            footer=""
-          >
-            <RegisterForm {...registerProps} />
-          </Modal>
-        </Menu.Item>
-      </Menu>
-    </React.Fragment>
+    <Menu
+      theme="light"
+      mode="horizontal"
+      style={{ lineHeight: '64px', borderBottom: '0px', float: 'right' }}
+    >
+      <Menu.Item>
+        <a type="link" onClick={() => toggleLogin()}>
+          <FormattedMessage {...messages.login} />
+        </a>
+        <LoginForm {...loginProps} />
+      </Menu.Item>
+      <Menu.Item>
+        <a type="link" onClick={() => toggleRegister()}>
+          <FormattedMessage {...messages.register} />
+        </a>
+        <RegisterForm {...registerProps} />
+      </Menu.Item>
+    </Menu>
   );
 }
 
@@ -133,7 +124,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(
-  withConnect,
-  memo,
-)(LogRegister);
+export default compose(withConnect)(LogRegister);

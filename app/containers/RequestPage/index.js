@@ -79,6 +79,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onSubmitRequest: (formData, onAfterConfirm) => {
+      dispatch(checkAccessToken());
       let formObject = {
         email: sessionStorage.getItem('email'),
         ...formData,

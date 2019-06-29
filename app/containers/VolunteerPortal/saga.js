@@ -1,4 +1,7 @@
-import { takeLatest, call, put, takeEvery } from 'redux-saga/effects';
+import { takeLatest, call, put } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
+import { notification } from 'antd';
+import io from 'socket.io-client';
 import { API_ROOT } from '../../../config/api-config';
 import request from '../../utils/request';
 import {
@@ -9,10 +12,7 @@ import {
 } from './actions';
 import Auth from '../../utils/Auth';
 import { GET_REQUESTER_DATA, ACCEPT_REQUEST } from './constants';
-import { push } from 'connected-react-router';
-import { notification } from 'antd';
 import { logout } from '../LogRegister/actions';
-import io from 'socket.io-client';
 import { unknownServerError } from '../App/actions';
 
 const socket = io(API_ROOT, { secure: true });
