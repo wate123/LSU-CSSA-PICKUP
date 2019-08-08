@@ -4,10 +4,10 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { NOT_LOGIN_NOTIFICATION } from './constants';
 
-export function defaultAction() {
+export function loginNotification() {
   return {
-    type: DEFAULT_ACTION,
+    type: NOT_LOGIN_NOTIFICATION,
   };
 }

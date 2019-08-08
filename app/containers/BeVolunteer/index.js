@@ -26,11 +26,15 @@ import { submitRequest, submitVolunteerAfterConfirm } from './actions';
 import { checkAccessToken } from '../NavBar/actions';
 const { confirm } = Modal;
 
+/**
+ * @return {null}
+ */
 export function BeVolunteer({
   onSubmitRequest,
   onAfterConfirm,
   volunteerData,
   checkAuthExpiration,
+  routeToHome
 }) {
   useInjectReducer({ key: 'beVolunteer', reducer });
   useInjectSaga({ key: 'beVolunteer', saga });
@@ -49,9 +53,13 @@ export function BeVolunteer({
   // if (isLoggedIn) {
   //   return <VolunteerForm {...volunteerFormProp} />;
   // }
-  return <VolunteerForm {...volunteerFormProp} />;
-  // routeToHome();
-  // return null;
+  if (sessionStorage.getItem("isVolunteer")){
+    return <VolunteerForm {...volunteerFormProp} />;
+  }
+  else{
+    routeToHome();
+    return null;
+  }
 }
 
 BeVolunteer.propTypes = {
@@ -75,7 +83,6 @@ function mapDispatchToProps(dispatch) {
         email: sessionStorage.getItem('email'),
         ...formData,
       };
-      console.log(formObject);
       const confirmList = Object.keys(formObject)
         .map(field => {
           if (formObject[field] === undefined) {

@@ -26,12 +26,14 @@ const beVolunteerReducer = (state = initialState, action) =>
         draft.requestData = action.requestData;
         break;
       case SUBMIT_VOLUNTEER_SUCCESS:
-        draft.successData = action.successData;
+        // draft.successData = action.successData;
         Auth.authenticateUser(action.successData.token);
         notification.open({
           message: <Icon type="heart" />,
           description: action.successData.message,
         });
+        sessionStorage.setItem('isVolunteer', 'true');
+        sessionStorage.setItem('name', action.successData.name);
         break;
       case SUBMIT_VOLUNTEER_ERROR:
         if (action.status === 401) {

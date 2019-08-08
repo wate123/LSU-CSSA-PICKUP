@@ -19,6 +19,10 @@ import {
   GET_USER_DATA_IN_STORAGE,
   LOGOUT,
   GET_USER_DATA_IN_STORAGE_FAIL,
+  FORGOT_PASS,
+  SUBMIT_FORGOT_PASS,
+  SUBMIT_FORGOT_PASS_FAIL,
+  SUBMIT_FORGOT_PASS_SUCCESS,
 } from './constants';
 
 export function logout(key) {
@@ -154,5 +158,33 @@ export function getUserData() {
 export function getUserDataFail() {
   return {
     type: GET_USER_DATA_IN_STORAGE_FAIL,
+  };
+}
+/**
+ * Dispatched when the register submitted successfully.
+ * @returns {object} An action object with type of REGISTER_SUBMIT_SUCCESS passing the callback from server.
+ */
+export function forgetPassword() {
+  return {
+    type: FORGOT_PASS,
+  };
+}
+/**
+ * Dispatched when the register submitted successfully.
+ * @returns {object} An action object with type of REGISTER_SUBMIT_SUCCESS passing the callback from server.
+ */
+export function submitForgetPassword(email) {
+  return {
+    type: SUBMIT_FORGOT_PASS,
+    email,
+  };
+}
+/**
+ * Dispatched when the register submitted successfully.
+ * @returns {object} An action object with type of REGISTER_SUBMIT_SUCCESS passing the callback from server.
+ */
+export function submitForgetPasswordSuccess() {
+  return {
+    type: SUBMIT_FORGOT_PASS_SUCCESS,
   };
 }

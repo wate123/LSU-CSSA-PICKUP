@@ -124,11 +124,11 @@ function RegisterForm({
             ],
           })(<Input type="password" onBlur={handleConfirmBlur} />)}
         </FormItem>
-        {/* <FormItem {...checkboxLayout}>
-        {getFieldDecorator('isVolunteer', {
-          initialValue: false,
-        })(<Checkbox>是否成为志愿者</Checkbox>)}
-      </FormItem> */}
+        {/*<FormItem {...checkboxLayout}>*/}
+        {/*  {getFieldDecorator('isVolunteer', {*/}
+        {/*    initialValue: false,*/}
+        {/*  })(<Checkbox>是否成为志愿者</Checkbox>)}*/}
+        {/*</FormItem>*/}
 
         <FormItem
           wrapperCol={{

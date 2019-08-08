@@ -14,6 +14,8 @@ import {
   LOGIN_SUBMIT,
   GET_USER_DATA_IN_STORAGE,
   REGISTER_SUBMIT,
+  FORGOT_PASS,
+  SUBMIT_FORGOT_PASS,
 } from '../LogRegister/constants';
 import Auth from '../../utils/Auth';
 import { API_ROOT } from '../../../config/api-config';
@@ -27,6 +29,7 @@ import {
   onLoginSubmit,
   renewAccessToken,
   renewAccessTokenFail,
+  submitForgetPasswordSuccess,
 } from '../LogRegister/actions';
 import {
   loginSuccessNotification,
@@ -46,7 +49,6 @@ const options = typeToken => ({
   },
   credentials: 'omit',
 });
-console.log(requestRootURL);
 
 const optionsWithBody = formData => ({
   method: 'POST',
@@ -123,7 +125,7 @@ export function* registerDataSubmit(action) {
   }
 }
 
-export function* checkExpire(action) {
+export function* checkExpire() {
   const requestURL = `${requestRootURL}/token/checkExpire`;
   try {
     const response = yield call(request, requestURL, options('accessToken'));
@@ -160,16 +162,32 @@ export function* checkExpire(action) {
 //   }
 // }
 // const sagas = [checkExpire, genNewAccessToken];
+export function* forgetPassword(action) {
+  const requestURL = `${requestRootURL}/auth/forgot`;
+  const email = `email=${encodeURIComponent(action.email.email)}`;
+  try {
+    const response = yield call(request, requestURL, optionsWithBody(email));
+    yield put(submitForgetPasswordSuccess());
+    notification.success({
+      message: '成功',
+      description: response.message,
+    });
+  } catch (err) {
+    console.log(err);
+    err.response.json().then(result => {
+      notification.error({
+        message: '失败',
+        description: result.message,
+      });
+    });
+  }
+}
 // Individual exports for testing
 export default function* navBarSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(CHECK_ACCESS_TOKEN, checkExpire);
-  // yield take(CHECK_ACCESS_TOKEN);
-  // yield call(CHECK_ACCESS_TOKEN);
-  // for (let saga of sagas) {
-  //   yield call(saga()); /* saga: fetchUserSaga || fetchStyleSaga */
-  // }
   yield takeLatest(LOGIN_SUBMIT, loginDataSubmit);
   yield takeLatest(REGISTER_SUBMIT, registerDataSubmit);
+  yield takeLatest(SUBMIT_FORGOT_PASS, forgetPassword);
   // yield takeLatest(RENEW_ACCESS_TOKEN_FAIL, genNewAccessToken);
 }

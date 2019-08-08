@@ -101,6 +101,15 @@ export const makeSelectIsLogout = () =>
     selectLogRegisterDomain,
     substate => substate.isLogout,
   );
+/**
+ * Selector used to select userInfo state
+ */
+
+export const makeSelectIsForget = () =>
+  createSelector(
+    selectLogRegisterDomain,
+    substate => substate.isForget,
+  );
 
 // /**
 //  * Select register user callback data

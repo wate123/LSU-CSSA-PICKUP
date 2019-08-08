@@ -17,6 +17,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import {
   makeSelectLoginModel,
   makeSelectRegisterModel,
+  makeSelectIsForget,
   // makeSelectSuccessRegisterCallback,
   // makeSelectSuccessLoginCallback,
 } from './selectors';
@@ -29,6 +30,8 @@ import {
   toggleRegisterModal,
   onLoginSubmit,
   onRegisterSubmit,
+  forgetPassword,
+  submitForgetPassword,
 } from './actions';
 import RegisterForm from '../../components/RegisterForm';
 import Auth from '../../utils/Auth';
@@ -41,6 +44,9 @@ export function LogRegister({
   isRegisterModelOpen,
   onSubmitLogin,
   onSubmitRegister,
+  isForget,
+  forgetPass,
+  onSubmitForget,
   // registerSuccessCallback,
   // loginSuccessCallback,
   // onLoginSubmitted,
@@ -53,6 +59,9 @@ export function LogRegister({
     toggleLogin,
     onSubmitLogin,
     toggleRegister,
+    forgetPass,
+    isForget,
+    onSubmitForget,
   };
   const registerProps = {
     isRegisterModelOpen,
@@ -96,6 +105,7 @@ LogRegister.propTypes = {
 const mapStateToProps = createStructuredSelector({
   isLoginModelOpen: makeSelectLoginModel(),
   isRegisterModelOpen: makeSelectRegisterModel(),
+  isForget: makeSelectIsForget(),
   // registerSuccessCallback: makeSelectSuccessRegisterCallback(),
   // loginSuccessCallback: makeSelectSuccessLoginCallback(),
 });
@@ -110,6 +120,8 @@ function mapDispatchToProps(dispatch) {
     //   if (evt !== undefined && evt.preventDefault) evt.preventDefault();
     //   dispatch(onLoginSubmit());
     // },
+    forgetPass: () => dispatch(forgetPassword()),
+    onSubmitForget: data => dispatch(submitForgetPassword(data)),
     onSubmitLogin: data => {
       dispatch(onLoginSubmit(data));
     },

@@ -32,6 +32,10 @@ import { checkAccessToken } from '../NavBar/actions';
 import { makeSelectisLoggedIn } from '../LogRegister/selectors';
 
 const { confirm } = Modal;
+
+/**
+ * @return {null}
+ */
 export function RequestPage({
   onSubmitRequest,
   requestData,
@@ -57,7 +61,8 @@ export function RequestPage({
   if (isLoggedIn) {
     return <RequestForm {...requestFormProp} />;
   }
-  return routeToHome();
+  routeToHome();
+  return null;
   // return null;
   // return !isTokenExpired ? <RequestForm {...requestFormProp} /> : routeToHome();
 }
@@ -165,7 +170,7 @@ function mapDispatchToProps(dispatch) {
     checkAuthExpiration: () => {
       dispatch(checkAccessToken());
     },
-    // routeToHome: () => dispatch(push('/')),
+    routeToHome: () => dispatch(push('/')),
   };
 }
 

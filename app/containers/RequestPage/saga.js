@@ -12,6 +12,7 @@ import request from '../../utils/request';
 import { submitRequestError } from './actions';
 
 import { unknownServerError } from '../App/actions';
+import { getUserData } from '../LogRegister/actions';
 const socket = io(API_ROOT, { secure: true });
 
 const requestRootURL = `${API_ROOT}`;
@@ -77,8 +78,11 @@ export function* requestDataSubmit(action) {
       message: <Icon type="heart" />,
       description: response.message,
     });
+    sessionStorage.setItem('isVolunteer', 'false');
+    sessionStorage.setItem('name', action.requestData.name);
     socket.emit('pickup request', true);
     // yield put(getRequesterData());
+    yield put(getUserData());
     yield put(push('/requestStatus'));
     // socket.emit('pickup request', true);
   } catch (err) {

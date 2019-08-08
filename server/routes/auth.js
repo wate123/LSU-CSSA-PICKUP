@@ -6,7 +6,7 @@ const User = require('mongoose').model('User');
 // import { renderToString } from 'react-dom/server';
 const path = require('path');
 const nodemailer = require('nodemailer');
-const { EmailTemplate } = require('email-templates');
+const EmailTemplate = require('email-templates');
 const async = require('async');
 
 const router = new express.Router();
@@ -33,6 +33,7 @@ router.post('/signup', (req, res, next) =>
   // }
   passport.authenticate('local-signup', err => {
     if (err) {
+      console.log(err);
       if (err.name === 'MongoError' && err.code === 11000) {
         // the 11000 Mongo code is for a duplication email error
         // the 409 HTTP status code is for conflict error
@@ -117,9 +118,9 @@ router.post('/forgot', (req, res) => {
   //                             // text: temp.text,
   //                             html:  temp.html,
   //                             attachments: [{
-  //                                 filename: 'cssaQR.png',
-  //                                 path: path.join(__dirname, "../", 'static', 'cssaQR.png'),
-  //                                 cid: '../../static/cssaQR.png' //same cid value as in the html img src
+  //                                 filename: 'cssaQR.jpeg',
+  //                                 path: path.join(__dirname, "../", 'static', 'cssaQR.jpeg'),
+  //                                 cid: '../../static/cssaQR.jpeg' //same cid value as in the html img src
   //                             }],
   //                         }, function (error, info) {
   //                             if (error) {
@@ -145,15 +146,14 @@ router.post('/forgot', (req, res) => {
   // });
 
   async.waterfall([
-    function(done) {
+    done => {
       User.findOne({
         email: req.body.email,
       }).exec(function(err, user) {
         if (user) {
           done(err, user);
         } else {
-          return res.status(200).json({
-            success: false,
+          return res.status(404).json({
             message: '未找到此用户',
           });
         }
@@ -182,56 +182,94 @@ router.post('/forgot', (req, res) => {
       const locals = {
         email: req.body.email,
         name: user.name,
-        token,
+        // token,
       };
       // create the path of email template folder
       const templateDir = path.join(
         __dirname,
-        '../',
+        '..',
         'mailTemplate',
         'resetPassword',
+        'html',
       );
-
-      const testMailTemplate = new EmailTemplate(templateDir);
-
-      // let locals = {
-      //     userName: "XYZ" //dynamic data for bind into the template
-      // };
-
-      testMailTemplate.render(locals, function(err, temp) {
-        if (err) {
-          console.log('error', err);
-        } else {
-          // console.log(temp)
-          transporter.sendMail(
+      console.log(templateDir);
+      const email = new EmailTemplate({
+        message: {
+          from: process.env.mail,
+          // send: true,
+          attachments: [
             {
-              from: process.env.mail,
-              to: locals.email,
-              subject: '【接机系统】 密码重置',
-              // text: temp.text,
-              html: temp.html,
-              attachments: [
-                {
-                  filename: 'cssaQR.png',
-                  path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-                  cid: '../../static/cssaQR.png', // same cid value as in the html img src
-                },
-              ],
+              filename: 'LSUCSSA.jpeg',
+              path: path.join(__dirname, '..', 'static', 'LSUCSSA.jpeg'),
+              cid: '../../static/LSUCSSA.jpeg', // same cid value as in the html img src
             },
-            function(error, info) {
-              if (error) {
-                console.log(error);
-                return done(error);
-              }
-              console.log('Message sent: ');
-              return res.status(200).json({
-                success: true,
-                message: `已发送密码重置邮件到${req.body.email}, 请注意查收.`,
-              });
+          ],
+          views: {
+            options: {
+              extension: 'ejs',
             },
-          );
-        }
+          },
+        },
+        transport: transporter,
       });
+      email
+        .send({
+          template: templateDir,
+          message: {
+            to: locals.email,
+            subject: '【接机系统】 密码重置',
+          },
+          locals: {
+            name: locals.name,
+          },
+        })
+        .then(() => {
+          console.log('Message sent: ');
+          return res.status(200).json({
+            // success: true,
+            message: `已发送密码重置邮件到${req.body.email}, 请注意查收.`,
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          return done(err);
+        });
+      // const testMailTemplate = new EmailTemplate(templateDir);
+
+      // testMailTemplate.render(locals, function(err, temp) {
+      //   if (err) {
+      //     console.log('error', err);
+      //   } else {
+      //     // console.log(temp)
+      //     transporter.sendMail(
+      //       {
+      //         from: process.env.mail,
+      //         to: locals.email,
+      //         subject: '【接机系统】 密码重置',
+      //         // text: temp.text,
+      //         html: temp.html,
+      //         attachments: [
+      //           {
+      //             filename: 'cssaQR.jpeg',
+      //             path: path.join(__dirname, '../', 'static', 'cssaQR.jpeg'),
+      //             cid: '../../static/cssaQR.jpeg', // same cid value as in the html img src
+      //           },
+      //         ],
+      //       },
+      //       function(error, info) {
+      //         if (error) {
+      //           console.log(error);
+      //           return done(error);
+      //         }
+      //         console.log('Message sent: ');
+      //         return res.status(200).json({
+      //           // success: true,
+      //           message: `已发送密码重置邮件到${req.body.email}, 请注意查收.`,
+      //         });
+      //       },
+      //     );
+      //   }
+      // });
     },
   ]);
 });

@@ -50,7 +50,7 @@ export function NotFound({ requestImage, imageSrc, loading }) {
                   width: '100%',
                   // marginLeft: 'auto',
                   // marginRight: 'auto',
-                  marginTop: '100px',
+                  // marginTop: '100px',
                 }}
               />
             </Skeleton>
@@ -65,7 +65,7 @@ export function NotFound({ requestImage, imageSrc, loading }) {
                 style={{
                   display: 'block',
                   width: '50%',
-                  marginTop: '50px',
+                  // marginTop: '50px',
                   marginLeft: 'auto',
                   marginRight: 'auto',
                 }}

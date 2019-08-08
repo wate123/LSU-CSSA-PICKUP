@@ -16,6 +16,7 @@ import {
   Checkbox,
   Button,
   Radio,
+  Typography,
 } from 'antd';
 // import styled from 'styled-components';
 
@@ -26,6 +27,8 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
 let checkJoin = false;
+// eslint-disable-next-line no-unused-vars
+const { Title } = Typography;
 
 const formItemLayout = {
   labelCol: {
@@ -75,15 +78,20 @@ function VolunteerForm({
     e.preventDefault();
     form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
-        console.log(fieldsValue);
         onSubmitRequest(fieldsValue, onAfterConfirm);
       }
     });
   };
   return (
     <Row justify="start">
-      <Col span={12} offset={5}>
-        <Form layout="horizontal" onSubmit={handelSubmitRequest}>
+      <Col
+        span={12}
+        offset={5}
+        // style={{ marginTop: '50px', marginBottom: '100px' }}
+      >
+        {/*<Title level={3}>志愿者表单</Title>*/}
+        <Form layout="horizontal" onSubmit={handelSubmitRequest} style={{marginBottom: '100px'}}>
+          <FormItem {...formItemLayout}><Title level={3}>志愿者表单</Title></FormItem>
           <FormItem {...formItemLayout} label={<span>姓名&nbsp;</span>}>
             {getFieldDecorator('name', {
               rules: [
@@ -183,7 +191,7 @@ function VolunteerForm({
               initialValue: false,
             })(
               <Checkbox value={checkJoin} onChange={onChangeJoinMaillit}>
-                加入LSU CSSA邮箱列表,获取以后的活动咨询(不稳定,慎用！）
+                加入LSU CSSA邮箱列表,获取以后的活动咨询
               </Checkbox>,
             )}
           </FormItem>

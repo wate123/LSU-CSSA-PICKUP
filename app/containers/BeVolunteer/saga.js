@@ -5,6 +5,9 @@ import { SUBMIT_VOLUNTEER_CONFIRMED } from './constants';
 import { API_ROOT } from '../../../config/api-config';
 import request from '../../utils/request';
 import { submitVolunteerError, submitVolunteerSuccessful } from './actions';
+import { Icon, notification } from 'antd';
+import React from 'react';
+import { getUserData } from '../LogRegister/actions';
 // import { generateAccessToken } from '../LogRegister/actions';
 const requestRootURL = `${API_ROOT}`;
 const options = formData => ({
@@ -47,7 +50,9 @@ export function* requestDataSubmit(action) {
   try {
     const response = yield call(request, requestURL, options(requestFormData));
     yield put(submitVolunteerSuccessful(response));
+    yield put(getUserData());
     yield put(push('/volunteer'));
+
     // socket.emit('pickup request', true);
   } catch (err) {
     if (err.status === 401) {

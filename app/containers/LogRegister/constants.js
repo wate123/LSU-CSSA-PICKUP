@@ -30,3 +30,9 @@ export const GET_NEW_ACCESS_TOKEN = 'app/LogRegister/GET_NEW_ACCESS_TOKEN';
 export const RENEW_ACCESS_TOKEN = 'app/LogRegister/RENEW_ACCESS_TOKEN';
 export const RENEW_ACCESS_TOKEN_FAIL =
   'app/LogRegister/RENEW_ACCESS_TOKEN_FAIL';
+export const FORGOT_PASS = 'app/LogRegister/FORGOT_PASS';
+export const SUBMIT_FORGOT_PASS = 'app/LogRegister/SUBMIT_FORGOT_PASS';
+export const SUBMIT_FORGOT_PASS_FAIL =
+  'app/LogRegister/SUBMIT_FORGOT_PASS_FAIL';
+export const SUBMIT_FORGOT_PASS_SUCCESS =
+  'app/LogRegister/SUBMIT_FORGOT_PASS_SUCCESS';

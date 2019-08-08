@@ -19,6 +19,9 @@ import {
   INVALID_REFRESH_TOKEN,
   RENEW_ACCESS_TOKEN,
   RENEW_ACCESS_TOKEN_FAIL,
+  FORGOT_PASS,
+  SUBMIT_FORGOT_PASS,
+  SUBMIT_FORGOT_PASS_SUCCESS,
 } from './constants';
 import Auth from '../../utils/Auth';
 
@@ -37,6 +40,7 @@ export const initialState = {
   loginSuccessCallback: false,
   userInfo: false,
   isError: false,
+  isForget: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -60,6 +64,7 @@ const logRegisterReducer = (state = initialState, action) =>
       case TOGGLE_LOGIN_MODAL:
         draft.isLoginModelOpen = !state.isLoginModelOpen;
         draft.isRegisterModelOpen = false;
+        draft.isForget = false;
         break;
       case TOGGLE_REGISTER_MODAL:
         draft.isRegisterModelOpen = !state.isRegisterModelOpen;
@@ -150,7 +155,7 @@ const logRegisterReducer = (state = initialState, action) =>
           draft.userInfo = {
             name: sessionStorage.getItem('name'),
             email: sessionStorage.getItem('email'),
-            isVolunteer: sessionStorage.getItem('isVolunteer') == 'true',
+            isVolunteer: sessionStorage.getItem('isVolunteer') === 'true',
           };
           draft.isLoggedIn = true;
         }
@@ -169,6 +174,14 @@ const logRegisterReducer = (state = initialState, action) =>
         draft.isLoggedIn = false;
         draft.loading = false;
         break;
+      case FORGOT_PASS:
+        draft.isForget = !state.isForget;
+        break;
+      case SUBMIT_FORGOT_PASS:
+        // draft.isForget = false;
+        break;
+      case SUBMIT_FORGOT_PASS_SUCCESS:
+        draft.isLoginModelOpen = !state.isLoginModelOpen;
       // case GET_USER_DATA_IN_STORAGE:
       //   draft.isLoggedIn = true;
       //   break;

@@ -45,9 +45,9 @@ export function App({ isUnknownServerError }) {
 
   return (
     // <Router>
-    <Layout style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
+    <Layout style={{ width: '100vw', height: '100vh', backgroundColor: 'white' }}>
       <Navbar />
-      <Content>
+      <Content className="main-layout-content">
         <Switch>
           <Route exact path="/" component={Home} />
           <Route
@@ -88,8 +88,8 @@ export function App({ isUnknownServerError }) {
         </Switch>
       </Content>
 
-      <Footer className="footer" style={{ textAlign: 'center' }}>
-        <Divider />
+      <Footer className="footer" style={{ textAlign: 'center', paddingBottom:"20px" }}>
+        {/*<Divider />*/}
         LSU CSSA接机系统 ©{new Date().getFullYear()} 林俊
       </Footer>
       <GlobalStyle />

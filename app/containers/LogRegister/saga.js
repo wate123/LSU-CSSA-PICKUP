@@ -47,6 +47,6 @@ export function* logoutNotification() {
 export default function* logRegisterSaga() {
   // yield takeLatest(LOGIN_SUBMIT, loginDataSubmit);
   // yield takeLatest(REGISTER_SUBMIT, registerDataSubmit);
-  yield takeLatest(RENEW_ACCESS_TOKEN_FAIL, reloginNotification);
+  // yield takeLatest(RENEW_ACCESS_TOKEN_FAIL, reloginNotification);
   yield takeLatest(LOGOUT, logoutNotification);
 }

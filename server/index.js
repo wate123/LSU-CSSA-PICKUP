@@ -17,6 +17,7 @@ const port = require('./port');
 const setup = require('./middlewares/frontendMiddleware');
 require('./models').connect(process.env.dbUri);
 
+
 // const options = {
 //   key: fs.readFileSync(path.join(__dirname, '../config', 'lsucssa.key')),
 //   cert: fs.readFileSync(path.join(__dirname, '../config', 'ssl-bundle.crt')),
@@ -34,7 +35,7 @@ app.use(cors());
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('view engine', 'ejs');
-app.use(express.static(`${__dirname}/../build`));
+app.use(express.static(path.join(__dirname, `../build`)));
 // app.use('/.well-known/pki-validation/', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -82,7 +83,13 @@ app.use('/api', authCheckMiddleware);
 app.use('/post', authCheckMiddleware);
 
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'localhost:3000');
+  res.header(
+    'Access-Control-Allow-Origin',
+    'localhost:5000',
+    '207.148.5.205',
+    'junlin-wate123.com',
+    'lsucssa.com'
+  );
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept',

@@ -32,7 +32,6 @@ function NavMenu({
       </Menu.Item>
     </Menu>
   );
-  console.log(userInfo.isVolunteer);
   return (
     <React.Fragment>
       <Menu

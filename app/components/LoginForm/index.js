@@ -32,16 +32,25 @@ function LoginForm({
   toggleRegister,
   toggleLogin,
   isLoginModelOpen,
+  forgetPass,
+  isForget,
+  onSubmitForget,
 }) {
   const { getFieldDecorator } = form;
   const submitLogin = e => {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
-        onSubmitLogin({
-          email: values.email.toLowerCase(),
-          password: values.password,
-        });
+        if (isForget) {
+          onSubmitForget({
+            email: values.email.toLowerCase(),
+          });
+        } else {
+          onSubmitLogin({
+            email: values.email.toLowerCase(),
+            password: values.password,
+          });
+        }
       }
     });
   };
@@ -54,12 +63,7 @@ function LoginForm({
       onCancel={() => toggleLogin()}
       footer=""
     >
-      <Form
-        id={shortid.generate()}
-        className="login-form"
-        layout="horizontal"
-        onSubmit={submitLogin}
-      >
+      <Form id={shortid.generate()} layout="horizontal" onSubmit={submitLogin}>
         <FormItem {...formItemLayout} label="邮箱">
           {getFieldDecorator('email', {
             rules: [
@@ -74,36 +78,58 @@ function LoginForm({
             ],
           })(<Input id={shortid.generate()} />)}
         </FormItem>
-        <FormItem {...formItemLayout} label="密码">
-          {getFieldDecorator('password', {
-            rules: [
-              {
-                required: true,
-                message: '请输入你的密码!',
+        {isForget ? (
+          <FormItem
+            wrapperCol={{
+              xs: {
+                span: 26,
+                offset: 0,
               },
-            ],
-          })(<Input id={shortid.generate()} type="password" />)}
-        </FormItem>
+              sm: {
+                span: 18,
+                offset: 3,
+              },
+            }}
+          >
+            <Button className="ant-col-24" type="primary" htmlType="submit">
+              提交
+            </Button>
+            <a onClick={forgetPass}>不好意思Σ（ﾟдﾟlll） 我突然想起来了</a>
+          </FormItem>
+        ) : (
+          <React.Fragment>
+            <FormItem {...formItemLayout} label="密码">
+              {getFieldDecorator('password', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入你的密码!',
+                  },
+                ],
+              })(<Input id={shortid.generate()} type="password" />)}
+            </FormItem>
 
-        <FormItem
-          wrapperCol={{
-            xs: {
-              span: 26,
-              offset: 0,
-            },
-            sm: {
-              span: 18,
-              offset: 3,
-            },
-          }}
-        >
-          <a className="login-form-forgot">忘记密码？</a>
-          <div />
-          <Button className="ant-col-24" type="primary" htmlType="submit">
-            登录
-          </Button>
-          或者 <a onClick={toggleRegister}>现在注册!</a>
-        </FormItem>
+            <FormItem
+              wrapperCol={{
+                xs: {
+                  span: 26,
+                  offset: 0,
+                },
+                sm: {
+                  span: 18,
+                  offset: 3,
+                },
+              }}
+            >
+              <a onClick={forgetPass}>忘记密码？</a>
+              <div />
+              <Button className="ant-col-24" type="primary" htmlType="submit">
+                登录
+              </Button>
+              或者 <a onClick={toggleRegister}>现在注册!</a>
+            </FormItem>
+          </React.Fragment>
+        )}
       </Form>
     </Modal>
   );

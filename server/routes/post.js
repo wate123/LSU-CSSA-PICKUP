@@ -275,7 +275,7 @@ router.post('/volunteer', (req, res) => {
           console.log(`first time or new insert doc fail ${err}`);
         } else {
           return res.status(200).json({
-            message: '申请成为志愿者成功！',
+            message: '成功成为志愿者！',
             token: newToken,
             name: firstTimeDoc.name,
           });

@@ -4,4 +4,4 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/Home/DEFAULT_ACTION';
+export const NOT_LOGIN_NOTIFICATION = 'app/Home/LOGIN_NOTIFICATION';

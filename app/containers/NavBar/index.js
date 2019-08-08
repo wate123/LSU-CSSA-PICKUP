@@ -59,7 +59,6 @@ export function NavBar({
   // };
 
   useEffect(() => {
-    console.log(userInfo.accessToken);
     if (userInfo.accessToken !== undefined) {
       checkAccessToken();
     }

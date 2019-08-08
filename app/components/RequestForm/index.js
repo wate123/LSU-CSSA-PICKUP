@@ -22,6 +22,7 @@ import {
   Button,
   Checkbox,
   TimePicker,
+  Typography,
 } from 'antd';
 import { Link } from 'react-router-dom';
 // import { FormattedMessage } from 'react-intl';
@@ -33,11 +34,12 @@ const { Option } = Select;
 const { TextArea } = Input;
 let otherAirport = '';
 let checkJoin = false;
+const { Title } = Typography;
 
 const formItemLayout = {
   labelCol: {
-    xs: { justify: 'end', span: 24 },
-    sm: { justify: 'end', span: 8 },
+    xs: { justify: 'center', span: 24 },
+    sm: { justify: 'center', span: 6 },
   },
   wrapperCol: {
     xs: { span: 24 },
@@ -47,7 +49,7 @@ const formItemLayout = {
 const radioGroupLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8 },
+    sm: { span: 6 },
   },
   wrapperCol: {
     xs: { span: 15 },
@@ -105,10 +107,16 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
     }
   };
   return (
-    <Row justify="start">
-      <Col span={12} offset={5}>
-        <Form layout="horizontal" onSubmit={handelSubmitRequest}>
-          <FormItem {...formItemLayout} label="" />
+    <Row justify="center" >
+      <Col span={4} />
+      <Col span={16}>
+        <Title style={{ textAlign: 'center' }} level={3}>
+          接机申请
+        </Title>
+        <Form layout="horizontal" onSubmit={handelSubmitRequest} style={{marginBottom: '100px'}}>
+          {/*<FormItem style={{ textAlign: 'center' }}>*/}
+          {/*  */}
+          {/*</FormItem>*/}
           <FormItem {...formItemLayout} label={<span>姓名&nbsp;</span>}>
             {getFieldDecorator('name', {
               rules: [
@@ -331,8 +339,8 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
           </FormItem>
           <FormItem
             labelCol={{
-              xs: { justify: 'end', span: 24 },
-              sm: { justify: 'end', span: 10 },
+              xs: { justify: 'start', span: 24 },
+              sm: { justify: 'start', span: 10 },
             }}
             wrapperCol={{
               xs: {
@@ -341,7 +349,7 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
               },
               sm: {
                 span: 16,
-                offset: 8,
+                offset: 6,
               },
             }}
             // wrapperCol={{
@@ -357,30 +365,6 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
               </Checkbox>,
             )}
           </FormItem>
-          {/* <FormItem
-            {...formItemLayout}
-            label="验证码"
-            // hasFeedback
-            validateStatus={this.state.captcha.validateStatus}
-            help={this.state.captcha.errorMsg}
-            required={true}
-          >
-            {getFieldDecorator('captcha', {
-              // validateTrigger: 'onClick',
-              rules: [{ required: true, message: '互相确认下眼神' }],
-            })(
-              <Row gutter={8}>
-                <Col span={12}>
-                  <Input
-                    value={this.state.captcha.value}
-                    onChange={this.handleCaptchaChange}
-                    placeholder="大小写均可"
-                  />
-                </Col>
-              </Row>,
-            )}
-            <Captcha captcha={this.getCaptcha} />
-          </FormItem> */}
           <FormItem {...tailFormItemLayout}>
             <Row>
               <Col span={2}>
@@ -397,6 +381,7 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
           </FormItem>
         </Form>
       </Col>
+      <Col span={4} />
     </Row>
   );
 }
