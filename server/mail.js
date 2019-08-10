@@ -18,7 +18,7 @@
 
 // function loadTemplate(templateName, contexts) {
 //   let template = new EmailTemplate(
-//     path.join(__dirname, 'mailTemplate', templateName),
+//     path.join(__dirname, 'emails', templateName),
 //   );
 //   return Promise.all(
 //     contexts.map(context => {
@@ -55,7 +55,7 @@
 //   });
 
 // var sendResetPasswordLink = transporter.templateSender(
-//   new EmailTemplate('./mailTemplate/resetPassword'),
+//   new EmailTemplate('./emails/resetPassword'),
 //   {
 //     from: config.qq,
 //   },
@@ -95,7 +95,7 @@
 
 // email
 //   .send({
-//     template: '/mailTemplate/UserNotification',
+//     template: '/emails/UserNotification',
 //     message: {
 //       to: 'elon@spacex.com',
 //     },

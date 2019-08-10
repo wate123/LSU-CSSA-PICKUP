@@ -107,16 +107,20 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
     }
   };
   return (
-    <Row justify="center" >
+    <Row justify="center">
       <Col span={4} />
       <Col span={16}>
         <Title style={{ textAlign: 'center' }} level={3}>
           接机申请
         </Title>
-        <Form layout="horizontal" onSubmit={handelSubmitRequest} style={{marginBottom: '100px'}}>
-          {/*<FormItem style={{ textAlign: 'center' }}>*/}
+        <Form
+          layout="horizontal"
+          onSubmit={handelSubmitRequest}
+          style={{ marginBottom: '100px' }}
+        >
+          {/* <FormItem style={{ textAlign: 'center' }}> */}
           {/*  */}
-          {/*</FormItem>*/}
+          {/* </FormItem> */}
           <FormItem {...formItemLayout} label={<span>姓名&nbsp;</span>}>
             {getFieldDecorator('name', {
               rules: [

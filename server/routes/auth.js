@@ -97,7 +97,7 @@ router.post('/forgot', (req, res) => {
   //                     token: token,
   //                 };
   //                 //create the path of email template folder
-  //                 const templateDir = path.join(__dirname, "../", 'mailTemplate', 'resetPassword');
+  //                 const templateDir = path.join(__dirname, "../", 'emails', 'resetPassword');
   //
   //                 const testMailTemplate = new EmailTemplate(templateDir);
   //
@@ -188,7 +188,7 @@ router.post('/forgot', (req, res) => {
       const templateDir = path.join(
         __dirname,
         '..',
-        'mailTemplate',
+        'emails',
         'resetPassword',
         'html',
       );

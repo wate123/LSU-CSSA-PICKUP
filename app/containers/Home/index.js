@@ -11,23 +11,34 @@ import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router';
 // import { FormattedMessage } from 'react-intl';
 import { Row, Col, Button, message, Typography } from 'antd';
-import wechatqrcode from '../../images/IMG_0415.jpg';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import styled from 'styled-components';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import marketing from '../../images/04.png';
 import reducer from './reducer';
 import saga from './saga';
 // import messages from './messages';
-import LogRegister from '../LogRegister';
 import {
   makeSelectisLoggedIn,
   makeSelectisVolunteer,
   makeSelectuserInfo,
 } from '../LogRegister/selectors';
 import { toggleLoginModal, toggleRegisterModal } from '../LogRegister/actions';
-import { loginNotification } from './actions';
+
+const ImageWrapper = styled.img`
+  display: flex;
+  @media (max-width: 1024px) {
+    width: 100%;
+    height: 100%;
+  }
+  @media (min-width: 1024px) {
+    width: 30%;
+    height: 30%;
+  }
+`;
 
 export function Home({ isLoggedIn, userInfo, notLoginNotification }) {
   useInjectReducer({ key: 'home', reducer });
@@ -36,7 +47,6 @@ export function Home({ isLoggedIn, userInfo, notLoginNotification }) {
   // if (isLoggedIn) {
   //   setVisibility(!isVisible);
   // }
-  const { Title } = Typography;
   const SwitchUserButton = () =>
     userInfo.name === '' ? (
       <Row
@@ -94,11 +104,9 @@ export function Home({ isLoggedIn, userInfo, notLoginNotification }) {
     );
   return (
     <React.Fragment>
-      <Row type="flex" justify="center" gutter={{ xs: 8, sm: 16, md: 24 }}>
-        <Title level={3}>欢迎使用LSU-CSSA接机系统</Title>
-      </Row>
+      <Row type="flex" justify="center" gutter={{ xs: 8, sm: 16, md: 24 }} />
       <Row type="flex" justify="center" gutter={{ xs: 7, sm: 16, md: 24 }}>
-        <img alt="LSU CSSA" src={wechatqrcode} />
+        <ImageWrapper alt="LSU CSSA" src={marketing} />
       </Row>
       {!isLoggedIn ? (
         <Row

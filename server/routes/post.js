@@ -4,7 +4,7 @@ require('dotenv').config();
 // const config = require('../../config/index');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const { EmailTemplate } = require('email-templates');
+const EmailTemplate = require('email-templates');
 const router = new express.Router();
 const path = require('path');
 const moment = require('moment');
@@ -19,99 +19,161 @@ const transporter = nodemailer.createTransport({
     pass: process.env.pass,
   },
 });
+const maillistTransporter = nodemailer.createTransport({
+  host: 'smtp.office365.com',
+  port: 587,
+  secureConnection: false,
+  auth: {
+    user: process.env.myemail,
+    pass: process.env.mypass,
+  },
+  tls: {
+    ciphers: 'SSLv3',
+  },
+});
 
-function sendToRequester(locals) {
+const email = new EmailTemplate({
+  message: {
+    from: process.env.mail,
+    attachments: [
+      {
+        filename: 'cssaQR.png',
+        path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
+        cid: '../../static/cssaQR.png', // same cid value as in the html img src
+      },
+    ],
+    views: {
+      options: {
+        extension: 'ejs', // <---- HERE
+      },
+    },
+    preview: {
+      open: {
+        app: 'google chrome',
+        wait: false,
+      },
+    },
+  },
+  // uncomment below to send emails in development/test env:
+  // send: true
+  transport: transporter,
+});
+
+function sendToRequester(locals, template) {
   // create the path of email template folder
   const templateDir = path.join(
     __dirname,
     '../',
-    'mailTemplate',
+    'emails',
     'userInfoUpdate',
     'requester',
   );
+  email
+    .send({
+      template,
+      message: {
+        to: locals.email,
+      },
+      locals: {
+        name: locals.name,
+      },
+    })
+    .then(console.log)
+    .catch(console.error);
 
-  const testMailTemplate = new EmailTemplate(templateDir);
-
-  // let locals = {
-  //     userName: "XYZ" //dynamic data for bind into the template
-  // };
-
-  testMailTemplate.render(locals, (err, temp) => {
-    if (err) {
-      console.log('error', err);
-    } else {
-      // console.log(temp)
-      transporter.sendMail(
-        {
-          from: process.env.mail,
-          to: locals.requesterEmail,
-          subject: temp.subject,
-          text: temp.text,
-          html: temp.html,
-          attachments: [
-            {
-              filename: 'cssaQR.png',
-              path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-              cid: '../../static/cssaQR.png', // same cid value as in the html img src
-            },
-          ],
-        },
-        function(error, info) {
-          if (error) {
-            console.log(error);
-          }
-          // console.log('Message sent: '+ info.response );
-        },
-      );
-    }
-  });
+  // const testMailTemplate = new EmailTemplate(templateDir);
+  //
+  // // let locals = {
+  // //     userName: "XYZ" //dynamic data for bind into the template
+  // // };
+  //
+  // testMailTemplate.render(locals, (err, temp) => {
+  //   if (err) {
+  //     console.log('error', err);
+  //   } else {
+  //     // console.log(temp)
+  //     transporter.sendMail(
+  //       {
+  //         from: process.env.mail,
+  //         to: locals.requesterEmail,
+  //         subject: temp.subject,
+  //         text: temp.text,
+  //         html: temp.html,
+  //         attachments: [
+  //           {
+  //             filename: 'cssaQR.png',
+  //             path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
+  //             cid: '../../static/cssaQR.png', // same cid value as in the html img src
+  //           },
+  //         ],
+  //       },
+  //       function(error, info) {
+  //         if (error) {
+  //           console.log(error);
+  //         }
+  //         // console.log('Message sent: '+ info.response );
+  //       },
+  //     );
+  //   }
+  // });
 }
 
-function sendToVolunteer(locals) {
+function sendToVolunteer(locals, template) {
   // create the path of email template folder
   const templateDir = path.join(
     __dirname,
     '../',
-    'mailTemplate',
+    'emails',
     'userInfoUpdate',
     'volunteer',
   );
-
-  const testMailTemplate = new EmailTemplate(templateDir);
-
-  // let locals = {
-  //     userName: "XYZ" //dynamic data for bind into the template
-  // };
-
-  testMailTemplate.render(locals, (err, temp) => {
-    if (err) {
-      console.log('error', err);
-    } else {
-      // console.log(temp)
-      transporter.sendMail(
-        {
-          from: process.env.mail,
-          to: locals.volunteerEmail,
-          subject: temp.subject,
-          text: temp.text,
-          html: temp.html,
-          attachments: [
-            {
-              filename: 'cssaQR.png',
-              path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-              cid: '../../static/cssaQR.png', // same cid value as in the html img src
-            },
-          ],
-        },
-        function(error, info) {
-          if (error) {
-            console.log(error);
-          }
-          // console.log('Message sent: ' + info.response);
-        },
-      );
-    }
-  });
+  email
+    .send({
+      template,
+      message: {
+        to: locals.volunteerEmail,
+      },
+      locals: {
+        name: locals.name,
+      },
+    })
+    .then(console.log)
+    .catch(console.error);
+  // const testMailTemplate = new EmailTemplate(templateDir);
+  //
+  // // let locals = {
+  // //     userName: "XYZ" //dynamic data for bind into the template
+  // // };
+  //
+  // testMailTemplate.render(locals, (err, temp) => {
+  //   if (err) {
+  //     console.log('error', err);
+  //   } else {
+  //     // console.log(temp)
+  //     transporter.sendMail(
+  //       {
+  //         from: process.env.mail,
+  //         to: locals.volunteerEmail,
+  //         subject: temp.subject,
+  //         text: temp.text,
+  //         html: temp.html,
+  //         attachments: [
+  //           {
+  //             filename: 'cssaQR.png',
+  //             path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
+  //             cid: '../../static/cssaQR.png', // same cid value as in the html img src
+  //           },
+  //         ],
+  //       },
+  //       function(error, info) {
+  //         if (error) {
+  //           console.log(error);
+  //         }
+  //         // console.log('Message sent: ' + info.response);
+  //       },
+  //     );
+  //   }
+  // });
 }
 
 router.post('/newRequest', (req, res) => {
@@ -153,58 +215,46 @@ router.post('/newRequest', (req, res) => {
     const newToken = jwt.sign(payload, process.env.jwtSecret, {
       expiresIn: '4d',
     });
-    // if (new_info.joinmail === true) {
-    //   const transporter = nodemailer.createTransport({
-    //     host: "smtp.office365.com",
-    //     port: 587,
-    //     secureConnection: false,
-    //     auth: {
-    //       user: process.env.myemail,
-    //       pass: process.env.mypass
-    //     },
-    //     tls: {
-    //       ciphers: "SSLv3"
-    //     }
-    //   });
-    //   transporter.sendMail(
-    //     {
-    //       from: process.env.myemail,
-    //       to: " LISTSERV@LISTSERV.LSU.EDU",
-    //       text: "ADD CSSA-L " + req.user.email
-    //     },
-    //     function(error, info) {
-    //       if (error) {
-    //         console.log(error);
-    //       }
-    //       console.log("User joined maillist initial request! ");
-    //       // console.log('Message sent: ' + info.response);
-    //     }
-    //   );
-    // }
-    if (req.user.accepted && req.user.status.length !== 0) {
-      // TODO keep the volunteer up to date meanwhile send a confirmed message to requester.
-      return res.status(200).json({
-        message: '系统已收到你的更改接机请求, 志愿者将会收到你的更改信息',
-        token: newToken,
-        name: req.user.name,
-      });
+    if (new_info.joinmail === true) {
+
+      maillistTransporter.sendMail(
+        {
+          from: process.env.myemail,
+          to: 'LISTSERV@LISTSERV.LSU.EDU',
+          text: `ADD CSSA-L ${req.user.email}`,
+        },
+        function(error, info) {
+          if (error) {
+            console.log(error);
+          }
+          console.log('User joined maillist initial request! ');
+          // console.log('Message sent: ' + info.response);
+        },
+      );
     }
-    User.findByIdAndUpdate(
-      userId,
-      new_info,
-      { upsert: true },
-      (err, firstTimeDoc) => {
-        if (err) {
-          console.log(`first time or new insert doc fail ${err}`);
+    User.findByIdAndUpdate(userId, new_info, { upsert: true }, (err, doc) => {
+      if (err) {
+        console.log(`first time or new insert doc fail ${err}`);
+      } else {
+        if (doc.accepted && doc.status.length !== 0) {
+          // TODO keep the volunteer up to date meanwhile send a confirmed message to requester.
+          sendToRequester(doc, 'userInfoUpdate/requester');
+          sendToVolunteer(doc, 'userInfoUpdate/volunteer');
+          return res.status(200).json({
+            message: '系统已收到你的更改接机请求, 志愿者将会收到你的更改信息',
+            token: newToken,
+            name: req.user.name,
+          });
         } else {
           return res.status(200).json({
             message: '系统已收到你的接机请求, 请耐心等待志愿者接受你的请求',
             token: newToken,
-            name: firstTimeDoc.name,
+            name: doc.name,
           });
         }
-      },
-    );
+
+      }
+    });
   });
 });
 
@@ -239,30 +289,30 @@ router.post('/volunteer', (req, res) => {
       expiresIn: '4d',
     });
     if (req.body.joinmail == 'true') {
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.office365.com',
-        port: 587,
-        secureConnection: false,
-        auth: {
-          user: process.env.myemail,
-          pass: process.env.mypass,
-        },
-        tls: {
-          ciphers: 'SSLv3',
-        },
-      });
-      transporter.sendMail(
+      // const transporter = nodemailer.createTransport({
+      //   host: 'smtp.office365.com',
+      //   port: 587,
+      //   secureConnection: false,
+      //   auth: {
+      //     user: process.env.myemail,
+      //     pass: process.env.mypass,
+      //   },
+      //   tls: {
+      //     ciphers: 'SSLv3',
+      //   },
+      // });
+      maillistTransporter.sendMail(
         {
           from: process.env.myemail,
-          to: ' LISTSERV@LISTSERV.LSU.EDU',
+          to: 'LISTSERV@LISTSERV.LSU.EDU',
           text: `ADD CSSA-L ${req.user.email}`,
         },
         function(error, info) {
           if (error) {
             console.log(error);
           }
+          console.log('User joined maillist initial request! ');
           // console.log('Message sent: ' + info.response);
-          console.log('Volunteer joined maillist! ');
         },
       );
     }
@@ -270,14 +320,14 @@ router.post('/volunteer', (req, res) => {
       { _id: req.user._id },
       new_info,
       { upsert: true, new: true },
-      (err, firstTimeDoc) => {
+      (err, docs) => {
         if (err) {
           console.log(`first time or new insert doc fail ${err}`);
         } else {
           return res.status(200).json({
             message: '成功成为志愿者！',
             token: newToken,
-            name: firstTimeDoc.name,
+            name: docs.name,
           });
         }
       },

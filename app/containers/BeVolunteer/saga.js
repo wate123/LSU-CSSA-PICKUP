@@ -1,12 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
+import { Icon, notification } from 'antd';
+import React from 'react';
 import Auth from '../../utils/Auth';
 import { SUBMIT_VOLUNTEER_CONFIRMED } from './constants';
 import { API_ROOT } from '../../../config/api-config';
 import request from '../../utils/request';
 import { submitVolunteerError, submitVolunteerSuccessful } from './actions';
-import { Icon, notification } from 'antd';
-import React from 'react';
 import { getUserData } from '../LogRegister/actions';
 // import { generateAccessToken } from '../LogRegister/actions';
 const requestRootURL = `${API_ROOT}`;

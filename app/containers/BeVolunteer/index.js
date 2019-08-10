@@ -34,7 +34,7 @@ export function BeVolunteer({
   onAfterConfirm,
   volunteerData,
   checkAuthExpiration,
-  routeToHome
+  routeToHome,
 }) {
   useInjectReducer({ key: 'beVolunteer', reducer });
   useInjectSaga({ key: 'beVolunteer', saga });
@@ -53,13 +53,12 @@ export function BeVolunteer({
   // if (isLoggedIn) {
   //   return <VolunteerForm {...volunteerFormProp} />;
   // }
-  if (sessionStorage.getItem("isVolunteer")){
+  if (sessionStorage.getItem('isVolunteer')) {
     return <VolunteerForm {...volunteerFormProp} />;
   }
-  else{
-    routeToHome();
-    return null;
-  }
+
+  routeToHome();
+  return null;
 }
 
 BeVolunteer.propTypes = {

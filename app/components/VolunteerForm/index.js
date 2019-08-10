@@ -89,9 +89,15 @@ function VolunteerForm({
         offset={5}
         // style={{ marginTop: '50px', marginBottom: '100px' }}
       >
-        {/*<Title level={3}>志愿者表单</Title>*/}
-        <Form layout="horizontal" onSubmit={handelSubmitRequest} style={{marginBottom: '100px'}}>
-          <FormItem {...formItemLayout}><Title level={3}>志愿者表单</Title></FormItem>
+        {/* <Title level={3}>志愿者表单</Title> */}
+        <Form
+          layout="horizontal"
+          onSubmit={handelSubmitRequest}
+          style={{ marginBottom: '100px' }}
+        >
+          <FormItem {...formItemLayout}>
+            <Title level={3}>志愿者表单</Title>
+          </FormItem>
           <FormItem {...formItemLayout} label={<span>姓名&nbsp;</span>}>
             {getFieldDecorator('name', {
               rules: [

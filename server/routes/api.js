@@ -62,7 +62,7 @@ function sendToRequester(locals) {
   const templateDir = path.join(
     __dirname,
     '../',
-    'mailTemplate',
+    'emails',
     'UserNotification',
   );
 
@@ -108,7 +108,7 @@ function sendToVolunteer(locals) {
   const templateDir = path.join(
     __dirname,
     '../',
-    'mailTemplate',
+    'emails',
     'VolunteerNotification',
   );
 

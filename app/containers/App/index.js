@@ -8,14 +8,14 @@
  */
 
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import PropTypes from 'prop-types';
-import { Layout, Divider, notification } from 'antd';
+import { Layout, notification } from 'antd';
 
 import Home from 'containers/Home/Loadable';
 import NotFound from 'containers/NotFound/Loadable';
@@ -45,7 +45,9 @@ export function App({ isUnknownServerError }) {
 
   return (
     // <Router>
-    <Layout style={{ width: '100vw', height: '100vh', backgroundColor: 'white' }}>
+    <Layout
+      style={{ width: '100vw', height: '100vh', backgroundColor: 'white' }}
+    >
       <Navbar />
       <Content className="main-layout-content">
         <Switch>
@@ -88,9 +90,12 @@ export function App({ isUnknownServerError }) {
         </Switch>
       </Content>
 
-      <Footer className="footer" style={{ textAlign: 'center', paddingBottom:"20px" }}>
-        {/*<Divider />*/}
-        LSU CSSA接机系统 ©{new Date().getFullYear()} 林俊
+      <Footer
+        className="footer"
+        style={{ textAlign: 'center', paddingBottom: '20px' }}
+      >
+        {/* <Divider /> */}
+        LSU CSSA接机系统 ©{new Date().getFullYear()} 林俊 & 丁永琪
       </Footer>
       <GlobalStyle />
     </Layout>

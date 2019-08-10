@@ -17,7 +17,6 @@ const port = require('./port');
 const setup = require('./middlewares/frontendMiddleware');
 require('./models').connect(process.env.dbUri);
 
-
 // const options = {
 //   key: fs.readFileSync(path.join(__dirname, '../config', 'lsucssa.key')),
 //   cert: fs.readFileSync(path.join(__dirname, '../config', 'ssl-bundle.crt')),
@@ -87,8 +86,7 @@ app.use(function(req, res, next) {
     'Access-Control-Allow-Origin',
     'localhost:5000',
     '207.148.5.205',
-    'junlin-wate123.com',
-    'lsucssa.com'
+    'lsucssa.com',
   );
   res.header(
     'Access-Control-Allow-Headers',
