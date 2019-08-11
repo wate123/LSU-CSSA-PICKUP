@@ -35,7 +35,10 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, `../build`)));
-// app.use('/.well-known/pki-validation/', express.static('public'));
+app.use(
+  '/.well-known/pki-validation/',
+  express.static(path.join(__dirname, 'public')),
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
@@ -87,6 +90,7 @@ app.use(function(req, res, next) {
     'localhost:5000',
     '207.148.5.205',
     'lsucssa.com',
+    'https://lsucssa.org',
   );
   res.header(
     'Access-Control-Allow-Headers',
@@ -106,8 +110,16 @@ app.use('/api', apiRoutes);
 app.use('/post', postRoutes);
 app.use('/token', tokenRoutes);
 
+const server = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, 'lsucssa.key')),
+    cert: fs.readFileSync(path.join(__dirname, 'lsucssa_org.crt')),
+},
+app,
+)
+
 // Start your app.
-const server = app.listen(port, host, async err => {
+// const server = app.
+server.listen(port, host, async err => {
   if (err) {
     return logger.error(err.message);
   }
@@ -125,6 +137,7 @@ const server = app.listen(port, host, async err => {
     logger.appStarted(port, prettyHost);
   }
 });
+
 const io = socket(server);
 io.on('connection', socket => {
   // console.log("socket connect");

@@ -47,9 +47,9 @@ router.post('/requestStatus', (req, res) =>
 );
 
 const transporter = nodemailer.createTransport({
-  service: 'qq',
-  port: 465,
-  secure: true,
+  service: 'mail.privateemail.com',
+  port: 587,
+  // secure: true,
   // secureConnection: false,
   auth: {
     user: process.env.mail,
@@ -57,96 +57,74 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-function sendToRequester(locals) {
+const email = new EmailTemplate({
+  message: {
+    from: process.env.mail,
+    attachments: [
+      {
+        filename: 'cssaQR.png',
+        path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
+        cid: '../../static/cssaQR.png', // same cid value as in the html img src
+      },
+    ],
+    views: {
+      options: {
+        extension: 'ejs', // <---- HERE
+      },
+    },
+    preview: {
+      open: {
+        app: 'google chrome',
+        wait: false,
+      },
+    },
+  },
+  // uncomment below to send emails in development/test env:
+  // send: true
+  transport: transporter,
+});
+
+function sendToRequester(locals, template) {
   // create the path of email template folder
   const templateDir = path.join(
     __dirname,
     '../',
     'emails',
-    'UserNotification',
+    'userInfoUpdate',
+    'requester',
   );
+  email
+    .send({
+      template,
+      message: {
+        to: locals.email,
+      },
+      locals
+    })
+    .then(console.log)
+    .catch(console.error);
+};
 
-  const testMailTemplate = new EmailTemplate(templateDir);
 
-  // let locals = {
-  //     userName: "XYZ" //dynamic data for bind into the template
-  // };
-
-  testMailTemplate.render(locals, function(err, temp) {
-    if (err) {
-      console.log('error', err);
-    } else {
-      // console.log(temp)
-      transporter.sendMail(
-        {
-          from: process.env.mail,
-          to: locals.requesterEmail,
-          subject: temp.subject,
-          text: temp.text,
-          html: temp.html,
-          attachments: [
-            {
-              filename: 'cssaQR.png',
-              path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-              cid: '../../static/cssaQR.png', // same cid value as in the html img src
-            },
-          ],
-        },
-        function(error, info) {
-          if (error) {
-            console.log(error);
-          }
-          console.log(`Message sent: ${info.response}`);
-        },
-      );
-    }
-  });
-}
-
-function sendToVolunteer(locals) {
+function sendToVolunteer(locals, template) {
   // create the path of email template folder
   const templateDir = path.join(
     __dirname,
     '../',
     'emails',
-    'VolunteerNotification',
+    'userInfoUpdate',
+    'volunteer',
   );
-
-  const testMailTemplate = new EmailTemplate(templateDir);
-
-  // let locals = {
-  //     userName: "XYZ" //dynamic data for bind into the template
-  // };
-
-  testMailTemplate.render(locals, function(err, temp) {
-    if (err) {
-      console.log('error', err);
-    } else {
-      // console.log(temp)
-      transporter.sendMail(
-        {
-          from: process.env.mail,
-          to: locals.volunteerEmail,
-          subject: temp.subject,
-          text: temp.text,
-          html: temp.html,
-          attachments: [
-            {
-              filename: 'cssaQR.png',
-              path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-              cid: '../../static/cssaQR.png', // same cid value as in the html img src
-            },
-          ],
-        },
-        function(error, info) {
-          if (error) {
-            console.log(error);
-          }
-          console.log(`Message sent: ${info.response}`);
-        },
-      );
-    }
-  });
+  email
+    .send({
+      template,
+      message: {
+        to: locals.volunteerEmail,
+      },
+      locals,
+    })
+    .then(console.log)
+    .catch(console.error);
 }
 
 router.post('/cancelRequest', (req, res) => {
@@ -203,13 +181,15 @@ router.post('/acceptRequest', (req, res) => {
       useFindAndModify: false,
       upsert: true,
     },
-    err => {
+    (err, docs) => {
       if (err) {
         return res.status(400).json({
           success: false,
           message: '接受请求失败',
         });
       }
+      sendToRequester(docs, 'UserNotification');
+      sendToVolunteer(docs, 'VolunteerNotification');
       return res.status(200).json({
         newAccessToken: req.newAccessToken,
       });

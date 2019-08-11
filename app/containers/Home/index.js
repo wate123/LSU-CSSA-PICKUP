@@ -30,11 +30,11 @@ import { toggleLoginModal, toggleRegisterModal } from '../LogRegister/actions';
 
 const ImageWrapper = styled.img`
   display: flex;
-  @media (max-width: 1024px) {
+  @media (max-width: 600px) {
     width: 100%;
     height: 100%;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 600px) {
     width: 30%;
     height: 30%;
   }

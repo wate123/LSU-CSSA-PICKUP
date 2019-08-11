@@ -10,9 +10,9 @@ const path = require('path');
 const moment = require('moment');
 
 const transporter = nodemailer.createTransport({
-  service: 'qq',
-  port: 465,
-  secure: true,
+  service: 'mail.privateemail.com',
+  port: 587,
+  // secure: true,
   // secureConnection: false,
   auth: {
     user: process.env.mail,
@@ -74,9 +74,7 @@ function sendToRequester(locals, template) {
       message: {
         to: locals.email,
       },
-      locals: {
-        name: locals.name,
-      },
+      locals
     })
     .then(console.log)
     .catch(console.error);
@@ -133,9 +131,7 @@ function sendToVolunteer(locals, template) {
       message: {
         to: locals.volunteerEmail,
       },
-      locals: {
-        name: locals.name,
-      },
+      locals
     })
     .then(console.log)
     .catch(console.error);
