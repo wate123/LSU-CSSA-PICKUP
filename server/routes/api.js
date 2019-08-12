@@ -4,7 +4,7 @@ const User = require('mongoose').model('User');
 const mongoose = require('mongoose');
 
 const nodemailer = require('nodemailer');
-const { EmailTemplate } = require('email-templates');
+const EmailTemplate = require('email-templates');
 // const config = require('../../config/index');
 const path = require('path');
 // var async = require('async');
@@ -30,7 +30,7 @@ router.post('/allRequester', (req, res) => {
     .sort({ arriveDateTime: 1 })
     .exec((err, docs) => {
       if (err) return console.log(err);
-      res.status(200).json({
+      return res.status(200).json({
         // message: "all request",
         // user values passed through from auth middleware
         result: docs,

@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
 const maillistTransporter = nodemailer.createTransport({
   host: 'smtp.office365.com',
   port: 587,
-  secureConnection: false,
+  // secure: true,
   auth: {
     user: process.env.myemail,
     pass: process.env.mypass,
@@ -47,12 +47,6 @@ const email = new EmailTemplate({
         extension: 'ejs', // <---- HERE
       },
     },
-    preview: {
-      open: {
-        app: 'google chrome',
-        wait: false,
-      },
-    },
   },
   // uncomment below to send emails in development/test env:
   // send: true
@@ -68,13 +62,14 @@ function sendToRequester(locals, template) {
     'userInfoUpdate',
     'requester',
   );
+  console.log("send mail??");
   email
     .send({
       template,
       message: {
         to: locals.email,
       },
-      locals
+      locals,
     })
     .then(console.log)
     .catch(console.error);
@@ -131,7 +126,7 @@ function sendToVolunteer(locals, template) {
       message: {
         to: locals.volunteerEmail,
       },
-      locals
+      locals,
     })
     .then(console.log)
     .catch(console.error);
@@ -173,7 +168,7 @@ function sendToVolunteer(locals, template) {
 }
 
 router.post('/newRequest', (req, res) => {
-  const new_info = {
+  let new_info = {
     name: req.body.name,
     sex: req.body.sex,
     hometown: req.body.hometown,
@@ -212,7 +207,6 @@ router.post('/newRequest', (req, res) => {
       expiresIn: '4d',
     });
     if (new_info.joinmail === true) {
-
       maillistTransporter.sendMail(
         {
           from: process.env.myemail,
@@ -228,12 +222,20 @@ router.post('/newRequest', (req, res) => {
         },
       );
     }
+    User.findById(userId, (err, doc) => {
+      console.log(doc);
+      if (doc.accepted && doc.status.length !== 0) {
+        delete new_info.status;
+        delete new_info.accepted;
+        console.log("in");
+      }
+    });
+    // console.log(new_info);
     User.findByIdAndUpdate(userId, new_info, { upsert: true }, (err, doc) => {
       if (err) {
         console.log(`first time or new insert doc fail ${err}`);
       } else {
         if (doc.accepted && doc.status.length !== 0) {
-          // TODO keep the volunteer up to date meanwhile send a confirmed message to requester.
           sendToRequester(doc, 'userInfoUpdate/requester');
           sendToVolunteer(doc, 'userInfoUpdate/volunteer');
           return res.status(200).json({
@@ -241,14 +243,12 @@ router.post('/newRequest', (req, res) => {
             token: newToken,
             name: req.user.name,
           });
-        } else {
-          return res.status(200).json({
-            message: '系统已收到你的接机请求, 请耐心等待志愿者接受你的请求',
-            token: newToken,
-            name: doc.name,
-          });
         }
-
+        return res.status(200).json({
+          message: '系统已收到你的接机请求, 请耐心等待志愿者接受你的请求',
+          token: newToken,
+          name: doc.name,
+        });
       }
     });
   });

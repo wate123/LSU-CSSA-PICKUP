@@ -75,7 +75,9 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
     e.preventDefault();
     form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
-        onSubmitRequest(fieldsValue, onAfterConfirm);
+        const fields = { ...fieldsValue, joinmail: checkJoin };
+        console.log(fields);
+        onSubmitRequest(fields, onAfterConfirm);
       }
     });
   };
