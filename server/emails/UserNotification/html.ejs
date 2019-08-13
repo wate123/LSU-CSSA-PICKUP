@@ -94,30 +94,30 @@
             <div class="content" style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;">
 
                 <!-- START CENTERED WHITE CONTAINER -->
-                <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;"><%=name%>已接受了你的接机请求!</span>
+                <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;"><%=locals.name%>已接受了你的接机请求!</span>
                 <div class="main" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;">
 
                     <!-- START MAIN CONTENT AREA -->
-                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">你好 <%=requesterName%>,</p>
-                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><%=name%>已接受了你的接机请求, 以下是他(她)的个人信息</p>
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">你好 <%=locals.requesterName%>,</p>
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"><%=locals.name%>已接受了你的接机请求, 以下是他(她)的个人信息</p>
                     <br/>
-                    <p>姓名： <%=name%></p>
-                    <p>性别： <%=sex%></p>
-                    <p>邮箱： <%=email%></p>
-                    <p>联系方式： <%=contact%></p>
-                    <%if (locals.major || locals.major !== "undefined"){%>
-                    <p>专业： <%=major%></p>
+                    <p>姓名： <%=locals.name%></p>
+                    <p>性别： <%=locals.sex%></p>
+                    <p>邮箱： <%=locals.email%></p>
+                    <p>联系方式： <%=locals.contact%></p>
+                    <%if (locals.major || locals.major !== "无"){%>
+                    <p>专业： <%=locals.major%></p>
                     <%}%>
-                    <%if (locals.degree){%>
-                    <p>攻读学位： <%=degree%></p>
+                    <%if (locals.degree || locals.degree !== "无"){%>
+                    <p>攻读学位： <%=locals.degree%></p>
                     <%}%>
-                    <%if (locals.car){%>
-                    <p>车型： <%=car%></p>
+                    <%if (locals.car || locals.car !== "无"){%>
+                    <p>车型： <%=locals.car%></p>
                     <%}%>
-                    <%if (sleep ==='yes') {%>
+                    <%if (locals.sleep ==='yes') {%>
                     <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">根据提供的信息, 你需要临时住宿. 我们推荐同学们提前联系,如果仍旧没有找到合适临时住宿,可以到学校ICC的临时宿舍（10刀一天）链接如下：http://www.lsu.edu/intlpro/icc/housing.php ICC不接受提前预定,先到先有床位.</p>
                     <%}%>
-                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">如果有任何接机方面的改动(接机时间和地点等等)或者突发事件, 比如航班改签等, 请尽快联系<%=name%>进行调整!</p>
+                    <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">如果有任何接机方面的改动(接机时间和地点等等)或者突发事件, 比如航班改签等, 请尽快联系<%=locals.name%>进行调整!</p>
                     <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">请大家不要反复提交重复的接机申请. 如果你发现了任何bug或者可以改进的地方, 请直接回复此邮箱.</p>
                     <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">最后, 欢迎大家使用由LSU-CSSA网络部提供的接机系统并欢迎大家来到LSU.</p>
                     <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Geaux Tigers!</p>

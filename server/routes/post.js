@@ -10,9 +10,9 @@ const path = require('path');
 const moment = require('moment');
 
 const transporter = nodemailer.createTransport({
-  service: 'mail.privateemail.com',
-  port: 587,
-  // secure: true,
+  host: 'mail.privateemail.com',
+  port: 465,
+  secure: true,
   // secureConnection: false,
   auth: {
     user: process.env.mail,
@@ -37,134 +37,81 @@ const email = new EmailTemplate({
     from: process.env.mail,
     attachments: [
       {
-        filename: 'cssaQR.png',
-        path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-        cid: '../../static/cssaQR.png', // same cid value as in the html img src
+        filename: 'cssaQR.jpg',
+        path: path.join(__dirname, '../', 'static', 'cssaQR.jpg'),
+        cid: '../../static/cssaQR.jpg', // same cid value as in the html img src
       },
     ],
-    views: {
-      options: {
-        extension: 'ejs', // <---- HERE
-      },
+  },
+  views: {
+    options: {
+      extension: 'ejs', // <---- HERE
     },
   },
   // uncomment below to send emails in development/test env:
-  // send: true
+  send: true,
   transport: transporter,
 });
 
-function sendToRequester(locals, template) {
+function sendToRequester(data, template) {
   // create the path of email template folder
-  const templateDir = path.join(
-    __dirname,
-    '../',
-    'emails',
-    'userInfoUpdate',
-    'requester',
+  const templateDir = path.join(__dirname, '../', 'emails', template);
+  User.findOne(
+    { email: data.volunteerEmail, name: data.volunteerName },
+    (err, volunteer) => {
+      const locals = {
+        ...volunteer.toObject(),
+        requesterName: data.name,
+      };
+      email
+        .renderAll(templateDir, locals)
+        .then((html, text, subject) => {
+          console.log(subject);
+          email.send({
+            template: templateDir,
+            message: {
+              to: data.requesterEmail,
+              subject,
+              text,
+              html,
+            },
+            locals,
+          });
+        })
+        .catch(err => console.log(err));
+    },
   );
-  console.log("send mail??");
-  email
-    .send({
-      template,
-      message: {
-        to: locals.email,
-      },
-      locals,
-    })
-    .then(console.log)
-    .catch(console.error);
-
-  // const testMailTemplate = new EmailTemplate(templateDir);
-  //
-  // // let locals = {
-  // //     userName: "XYZ" //dynamic data for bind into the template
-  // // };
-  //
-  // testMailTemplate.render(locals, (err, temp) => {
-  //   if (err) {
-  //     console.log('error', err);
-  //   } else {
-  //     // console.log(temp)
-  //     transporter.sendMail(
-  //       {
-  //         from: process.env.mail,
-  //         to: locals.requesterEmail,
-  //         subject: temp.subject,
-  //         text: temp.text,
-  //         html: temp.html,
-  //         attachments: [
-  //           {
-  //             filename: 'cssaQR.png',
-  //             path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-  //             cid: '../../static/cssaQR.png', // same cid value as in the html img src
-  //           },
-  //         ],
-  //       },
-  //       function(error, info) {
-  //         if (error) {
-  //           console.log(error);
-  //         }
-  //         // console.log('Message sent: '+ info.response );
-  //       },
-  //     );
-  //   }
-  // });
 }
 
-function sendToVolunteer(locals, template) {
+function sendToVolunteer(data, template) {
   // create the path of email template folder
-  const templateDir = path.join(
-    __dirname,
-    '../',
-    'emails',
-    'userInfoUpdate',
-    'volunteer',
+  const templateDir = path.join(__dirname, '../', 'emails', template);
+  User.findOne(
+    { email: data.requesterEmail, name: data.name },
+    (err, requester) => {
+      const locals = {
+        ...requester.toObject(),
+        volunteerName: requester.volunteerName,
+        date: moment(requester.arriveDateTime).format('YYYY-MM-DD'),
+        time: moment(requester.arriveDateTime).format('HH:mm:ss'),
+      };
+      email
+        .renderAll(templateDir, locals)
+        .then((html, text, subject) => {
+          email.send({
+            template: templateDir,
+            message: {
+              to: data.volunteerEmail,
+              subject,
+              text,
+              html,
+            },
+            locals,
+          });
+        })
+        .catch(err => console.log(err));
+    },
   );
-  email
-    .send({
-      template,
-      message: {
-        to: locals.volunteerEmail,
-      },
-      locals,
-    })
-    .then(console.log)
-    .catch(console.error);
-  // const testMailTemplate = new EmailTemplate(templateDir);
-  //
-  // // let locals = {
-  // //     userName: "XYZ" //dynamic data for bind into the template
-  // // };
-  //
-  // testMailTemplate.render(locals, (err, temp) => {
-  //   if (err) {
-  //     console.log('error', err);
-  //   } else {
-  //     // console.log(temp)
-  //     transporter.sendMail(
-  //       {
-  //         from: process.env.mail,
-  //         to: locals.volunteerEmail,
-  //         subject: temp.subject,
-  //         text: temp.text,
-  //         html: temp.html,
-  //         attachments: [
-  //           {
-  //             filename: 'cssaQR.png',
-  //             path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-  //             cid: '../../static/cssaQR.png', // same cid value as in the html img src
-  //           },
-  //         ],
-  //       },
-  //       function(error, info) {
-  //         if (error) {
-  //           console.log(error);
-  //         }
-  //         // console.log('Message sent: ' + info.response);
-  //       },
-  //     );
-  //   }
-  // });
 }
 
 router.post('/newRequest', (req, res) => {
@@ -227,7 +174,6 @@ router.post('/newRequest', (req, res) => {
       if (doc.accepted && doc.status.length !== 0) {
         delete new_info.status;
         delete new_info.accepted;
-        console.log("in");
       }
     });
     // console.log(new_info);

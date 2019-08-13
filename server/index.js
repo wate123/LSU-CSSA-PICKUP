@@ -35,10 +35,10 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, `../build`)));
-app.use(
-  '/.well-known/pki-validation/',
-  express.static(path.join(__dirname, 'public')),
-);
+// app.use(
+//   '/.well-known/pki-validation/',
+//   express.static(path.join(__dirname, 'public')),
+// );
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
@@ -110,12 +110,13 @@ app.use('/api', apiRoutes);
 app.use('/post', postRoutes);
 app.use('/token', tokenRoutes);
 
-const server = https.createServer({
+const server = https.createServer(
+  {
     key: fs.readFileSync(path.join(__dirname, 'lsucssa.key')),
     cert: fs.readFileSync(path.join(__dirname, 'lsucssa_org.crt')),
-},
-app,
-)
+  },
+  app,
+);
 
 // Start your app.
 // const server = app.

@@ -20,7 +20,6 @@ const requestRootURL = `${API_ROOT}`;
 const options = () => ({
   method: 'POST',
   headers: {
-    'Content-type': 'application/x-www-form-urlencoded',
     Authorization: `Bearer ${Auth.getToken('accessToken')}`,
   },
   credentials: 'omit',

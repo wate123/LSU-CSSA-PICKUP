@@ -16,6 +16,7 @@ module.exports = (req, res, next) => {
   // decode the token using a secret key-phrase
   return jwt.verify(token, process.env.jwtSecret, (err, decoded) => {
     // the 401 code is for unauthorized status
+    // console.log(err);
     if (err) {
       return res.status(401).end();
     }

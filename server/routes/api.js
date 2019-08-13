@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 const EmailTemplate = require('email-templates');
 // const config = require('../../config/index');
 const path = require('path');
+const moment = require('moment');
 // var async = require('async');
 // var crypto = require('crypto');
 //
@@ -47,9 +48,9 @@ router.post('/requestStatus', (req, res) =>
 );
 
 const transporter = nodemailer.createTransport({
-  service: 'mail.privateemail.com',
-  port: 587,
-  // secure: true,
+  host: 'mail.privateemail.com',
+  port: 465,
+  secure: true,
   // secureConnection: false,
   auth: {
     user: process.env.mail,
@@ -62,69 +63,81 @@ const email = new EmailTemplate({
     from: process.env.mail,
     attachments: [
       {
-        filename: 'cssaQR.png',
-        path: path.join(__dirname, '../', 'static', 'cssaQR.png'),
-        cid: '../../static/cssaQR.png', // same cid value as in the html img src
+        filename: 'cssaQR.jpg',
+        path: path.join(__dirname, '../', 'static', 'cssaQR.jpg'),
+        cid: '../../static/cssaQR.jpg', // same cid value as in the html img src
       },
     ],
-    views: {
-      options: {
-        extension: 'ejs', // <---- HERE
-      },
-    },
-    preview: {
-      open: {
-        app: 'google chrome',
-        wait: false,
-      },
+  },
+  views: {
+    options: {
+      extension: 'ejs', // <---- HERE
     },
   },
   // uncomment below to send emails in development/test env:
-  // send: true
+  send: true,
   transport: transporter,
 });
 
-function sendToRequester(locals, template) {
+function sendToRequester(data, template) {
   // create the path of email template folder
-  const templateDir = path.join(
-    __dirname,
-    '../',
-    'emails',
-    'userInfoUpdate',
-    'requester',
+  const templateDir = path.join(__dirname, '../', 'emails', template);
+  User.findOne(
+    { email: data.volunteerEmail, name: data.volunteerName },
+    (err, volunteer) => {
+      const locals = {
+        ...volunteer.toObject(),
+        requesterName: data.name,
+      };
+      email
+        .renderAll(templateDir, locals)
+        .then((html, text, subject) => {
+          console.log(subject);
+          email.send({
+            template: templateDir,
+            message: {
+              to: data.requesterEmail,
+              subject,
+              text,
+              html,
+            },
+            locals,
+          });
+        })
+        .catch(err => console.log(err));
+    },
   );
-  email
-    .send({
-      template,
-      message: {
-        to: locals.email,
-      },
-      locals
-    })
-    .then(console.log)
-    .catch(console.error);
-};
+}
 
-
-function sendToVolunteer(locals, template) {
+function sendToVolunteer(data, template) {
   // create the path of email template folder
-  const templateDir = path.join(
-    __dirname,
-    '../',
-    'emails',
-    'userInfoUpdate',
-    'volunteer',
+  const templateDir = path.join(__dirname, '../', 'emails', template);
+  User.findOne(
+    { email: data.requesterEmail, name: data.name },
+    (err, requester) => {
+      const locals = {
+        ...requester.toObject(),
+        volunteerName: requester.volunteerName,
+        date: moment(requester.arriveDateTime).format('YYYY-MM-DD'),
+        time: moment(requester.arriveDateTime).format('HH:mm:ss'),
+      };
+      email
+        .renderAll(templateDir, locals)
+        .then((html, text, subject) => {
+          email.send({
+            template: templateDir,
+            message: {
+              to: data.volunteerEmail,
+              subject,
+              text,
+              html,
+            },
+            locals,
+          });
+        })
+        .catch(err => console.log(err));
+    },
   );
-  email
-    .send({
-      template,
-      message: {
-        to: locals.volunteerEmail,
-      },
-      locals,
-    })
-    .then(console.log)
-    .catch(console.error);
 }
 
 router.post('/cancelRequest', (req, res) => {
@@ -188,8 +201,14 @@ router.post('/acceptRequest', (req, res) => {
           message: '接受请求失败',
         });
       }
-      sendToRequester(docs, 'UserNotification');
-      sendToVolunteer(docs, 'VolunteerNotification');
+      const Info = {
+        name: docs.name,
+        volunteerEmail: req.user.email,
+        requesterEmail: docs.email,
+        volunteerName: req.user.name,
+      };
+      sendToRequester(Info, 'UserNotification');
+      sendToVolunteer(Info, 'VolunteerNotification');
       return res.status(200).json({
         newAccessToken: req.newAccessToken,
       });

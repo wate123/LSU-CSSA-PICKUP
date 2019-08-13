@@ -1,20 +1,20 @@
-你好 <%=requesterName%>,
+你好 <%=locals.requesterName%>,
 
-更新版本的接机申请已经发送给<%=name%>, 建议你和<%=name%>再次确认下
-以下是<%=name%>个人信息
+更新版本的接机申请已经发送给<%=locals.name%>, 建议你和<%=locals.name%>再次确认下
+以下是<%=locals.name%>个人信息
 
-姓名： <%=name%>
-性别： <%=sex%>
-邮箱： <%=email%>
-联系方式： <%=contact%>
+姓名： <%=locals.name%>
+性别： <%=locals.sex%>
+邮箱： <%=locals.email%>
+联系方式： <%=locals.contact%>
 <%if (locals.major){%>
-专业： <%=major%>
+专业： <%=locals.major%>
 <%}%>
 <%if (locals.degree){%>
-攻读学位： <%=degree%>
+攻读学位： <%=locals.degree%>
 <%}%>
 <%if (locals.car){%>
-车型： <%=car%>
+车型： <%=locals.car%>
 <%}%>
 
 

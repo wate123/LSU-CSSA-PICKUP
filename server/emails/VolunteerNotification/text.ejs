@@ -1,25 +1,25 @@
-你好 <%=volunteerName%>,
+你好 <%=locals.volunteerName%>,
 
-你已接受了<%=name%>的接机请求, 以下是他(她)的个人信息
+你已接受了<%=locals.name%>的接机请求, 以下是他(她)的个人信息
 
-姓名： <%=name%>
-毕业学校： <%=school%>
-邮箱： <%=email%>
+姓名： <%=locals.name%>
+毕业学校： <%=locals.school%>
+邮箱： <%=locals.email%>
 <%if (locals.phone){%>
-电话号码： <%=phone%>
+电话号码： <%=locals.phone%>
 <%}%>
 <%if (locals.social){%>
-社交平台： <%=social%>
+社交平台： <%=locals.social%>
 <%}%>
-抵达机场： <%=airport%>
-抵达日期： <%=date%> (美国中部时间）
-抵达时间： <%=time%> (美国中部时间）
+抵达机场： <%=locals.arriveAirport%>
+抵达日期： <%=locals.date%> (美国中部时间）
+抵达时间： <%=locals.time%> (美国中部时间）
 <%if (locals.luggage){%>
-行李数量： <%=luggage%>
+行李数量： <%=locals.luggage%>
 <%}%>
-想对志愿者说： <%=toVolunteer%>
+想对志愿者说： <%=locals.toVolunteer%>
 
-如果有任何接机方面的改动（接机时间和地点等等）, 请尽快联系<%=name%>!
+如果有任何接机方面的改动（接机时间和地点等等）, 请尽快联系<%=locals.name%>!
 
 请大家慎重接受任何接机请求以避免出现不必要的麻烦. 如果你发现了任何bug或者可以改进的地方, 请直接回复此邮箱.
 
