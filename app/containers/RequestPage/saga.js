@@ -66,7 +66,7 @@ export function* requestDataSubmit(action) {
   )}&joinmail=${encodeURIComponent(
     action.requestData.joinmail,
   )}&status=${encodeURIComponent(
-    `接机申请已提交 ${new Date().toLocaleString()}|正在匹配志愿者...}`,
+    `接机申请已提交 ${new Date().toLocaleString()}|正在匹配志愿者...`,
   )}&accepted=${encodeURIComponent(
     action.requestData.accepted,
   )}&isVolunteer=${encodeURIComponent(action.requestData.isVolunteer)}`;

@@ -46,7 +46,7 @@ export function* requestDataSubmit(action) {
     action.requestData.joinmail,
   )}&accepted=${encodeURIComponent(
     action.requestData.accepted,
-  )}&isVolunteer=${encodeURIComponent(action.requestData.isVolunteer)}`;
+  )}&isVolunteer=${encodeURIComponent(action.requestData.isVolunteer)}&note=${encodeURIComponent(action.requestData.note)}`;
   try {
     const response = yield call(request, requestURL, options(requestFormData));
     yield put(submitVolunteerSuccessful(response));

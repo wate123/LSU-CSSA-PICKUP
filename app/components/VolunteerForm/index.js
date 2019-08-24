@@ -143,6 +143,14 @@ function VolunteerForm({
               <Input placeholder="小轿车？ SUV？ 等等" />,
             )}
           </FormItem>
+          <FormItem {...formItemLayout} label="备注">
+            {getFieldDecorator('note', {})(
+              <TextArea
+                rows={4}
+                placeholder="留给接机申请人的注意事项"
+              />,
+            )}
+          </FormItem>
           <FormItem
             {...formItemLayout}
             label={

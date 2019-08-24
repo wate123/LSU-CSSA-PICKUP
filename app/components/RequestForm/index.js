@@ -89,23 +89,27 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
     checkJoin = e.target.checked;
   };
   const checkDate = (rule, value, callback) => {
-    if (value.isBefore(new Date(new Date().toDateString()))) {
-      callback('时光不能倒转, 请选择今天或者未来日期');
-    } else {
-      callback();
+    if (value !== undefined){
+      if (value.isBefore(new Date(new Date().toDateString()))) {
+        callback('时光不能倒转, 请选择今天或者未来日期');
+      } else {
+        callback();
+      }
     }
   };
   const checkTime = (rule, value, callback) => {
-    const userSelectDate = form.getFieldValue('date').startOf('day');
-    const todayWithoutTime = new Date(new Date().toDateString());
-    const twoHourAfter = new Date().setHours(new Date().getHours() + 2);
-    if (
-      userSelectDate.isSame(todayWithoutTime) &&
-      value.isBefore(twoHourAfter)
-    ) {
-      callback('至少两小时前');
-    } else {
-      callback();
+    if(value !== undefined){
+      const userSelectDate = form.getFieldValue('date').startOf('day');
+      const todayWithoutTime = new Date(new Date().toDateString());
+      const twoHourAfter = new Date().setHours(new Date().getHours() + 2);
+      if (
+        userSelectDate.isSame(todayWithoutTime) &&
+        value.isBefore(twoHourAfter)
+      ) {
+        callback('至少两小时前');
+      } else {
+        callback();
+      }
     }
   };
   return (
@@ -169,14 +173,15 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
             )}
           </FormItem>
           <FormItem
-            labelCol={{
-              xs: { span: 10 },
-              sm: { span: 8 },
-            }}
-            wrapperCol={{
-              sm: { span: 8 },
-              md: { span: 7 },
-            }}
+            {...formItemLayout}
+            // labelCol={{
+            //   xs: { span: 10 },
+            //   sm: { span: 8 },
+            // }}
+            // wrapperCol={{
+            //   sm: { span: 8 },
+            //   md: { span: 7 },
+            // }}
             label="到达日期"
             extra="美国中部时间"
           >
@@ -191,14 +196,15 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
           </FormItem>
 
           <FormItem
-            labelCol={{
-              xs: { span: 10 },
-              sm: { span: 8 },
-            }}
-            wrapperCol={{
-              xs: { span: 15 },
-              sm: { span: 10 },
-            }}
+            {...formItemLayout}
+            // labelCol={{
+            //   xs: { span: 10 },
+            //   sm: { span: 8 },
+            // }}
+            // wrapperCol={{
+            //   xs: { span: 15 },
+            //   sm: { span: 10 },
+            // }}
             label="到达时间"
             extra="美国中部时间"
           >
@@ -280,9 +286,11 @@ function RequestForm({ form, onSubmitRequest, onAfterConfirm }) {
               </RadioGroup>,
             )}
           </FormItem>
-          <FormItem {...formItemLayout} label="联系电话">
-            {getFieldDecorator('phone', { initialValue: '无' })(
+          <FormItem
+            {...formItemLayout} label="联系电话">
+            {getFieldDecorator('phone', { initialValue: ''})(
               <Input
+                placeholder='建议在国内开通电信一美元电话卡, 获得美国号码!'
                 addonBefore={getFieldDecorator('prefix', {
                   initialValue: '1',
                 })(

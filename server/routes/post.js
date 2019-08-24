@@ -212,6 +212,7 @@ router.post('/volunteer', (req, res) => {
     joinMail: req.body.joinmail,
     isVolunteer: true,
     accepted: true,
+    note: req.body.note,
   };
   const token = req.headers.authorization.split(' ')[1];
   jwt.verify(token, process.env.jwtSecret, (err, decoded) => {

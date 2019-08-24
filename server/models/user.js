@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema({
   major: String,
   car: String,
   contact: String,
+  note: String,
   volunteerEmail: String,
   isNewRequest: Boolean,
   reset_password_token: String,

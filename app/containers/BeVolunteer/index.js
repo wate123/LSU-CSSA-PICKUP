@@ -107,6 +107,8 @@ function mapDispatchToProps(dispatch) {
 
             case 'email':
               return `邮箱: ${formObject[field]}`;
+            case 'note':
+              return `备注: ${formObject[field]}`;
             default:
               break;
           }

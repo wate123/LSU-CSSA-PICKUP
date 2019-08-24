@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { push } from 'connected-react-router';
 // import { FormattedMessage } from 'react-intl';
-import { Row, Col, Button, message, Typography } from 'antd';
+import { Row, Col, Button, message, Alert } from 'antd';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
@@ -104,7 +104,13 @@ export function Home({ isLoggedIn, userInfo, notLoginNotification }) {
     );
   return (
     <React.Fragment>
-      <Row type="flex" justify="center" gutter={{ xs: 8, sm: 16, md: 24 }} />
+      <Row type="flex" justify="end" gutter={{ xs: 8, sm: 16, md: 24 }}>
+        <Alert
+          message="通知"
+          descrition="懒得再测试了... 有问题可以找微信wate123"
+          type="info"
+        />
+      </Row>
       <Row type="flex" justify="center" gutter={{ xs: 7, sm: 16, md: 24 }}>
         <ImageWrapper alt="LSU CSSA" src={marketing} />
       </Row>
