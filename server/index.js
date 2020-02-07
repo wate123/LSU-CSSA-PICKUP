@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint consistent-return:0 import/order:0 */
 require('dotenv').config();
 const express = require('express');
@@ -15,12 +16,7 @@ const logger = require('./logger');
 const argv = require('./argv');
 const port = require('./port');
 const setup = require('./middlewares/frontendMiddleware');
-require('./models').connect(process.env.dbUri);
-
-// const options = {
-//   key: fs.readFileSync(path.join(__dirname, '../config', 'lsucssa.key')),
-//   cert: fs.readFileSync(path.join(__dirname, '../config', 'ssl-bundle.crt')),
-// };
+require('./models').connect(process.env.DB_URL);
 
 const isDev = process.env.NODE_ENV !== 'production';
 const ngrok =
@@ -34,7 +30,7 @@ app.use(cors());
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, `../build`)));
+// app.use(express.static(path.join(__dirname, `../build`)));
 // app.use(
 //   '/.well-known/pki-validation/',
 //   express.static(path.join(__dirname, 'public')),
@@ -49,7 +45,7 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
-  outputPath: resolve(process.cwd(), 'build'),
+  outputPath: resolve(process.cwd(), '../build'),
   publicPath: '/',
 });
 // get the intended host and port number, use localhost and port 3000 if not provided
@@ -68,9 +64,6 @@ const localSignupStrategy = require('./passport/local-signup');
 const localLoginStrategy = require('./passport/local-login');
 passport.use('local-signup', localSignupStrategy);
 passport.use('local-login', localLoginStrategy);
-// app.get('/*', function(req, res) {
-//   res.sendFile(path.join(__dirname, '../build', 'index.html'));
-// });
 app.post('/image', (req, res) => {
   const imagedir = path.join(__dirname, '/static/images');
   fs.readdir(imagedir, (err, images) => {
@@ -84,12 +77,11 @@ const authCheckMiddleware = require('./middlewares/auth-check');
 app.use('/api', authCheckMiddleware);
 app.use('/post', authCheckMiddleware);
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header(
     'Access-Control-Allow-Origin',
     'localhost:5000',
-    '207.148.5.205',
-    'lsucssa.com',
+    'https://lsucssa.com',
     'https://lsucssa.org',
   );
   res.header(
@@ -105,21 +97,22 @@ const apiRoutes = require('./routes/api');
 const postRoutes = require('./routes/post');
 const tokenRoutes = require('./routes/token');
 
-app.use('/auth', authRoutes);
-app.use('/api', apiRoutes);
-app.use('/post', postRoutes);
-app.use('/token', tokenRoutes);
+app.use('/airport_pickup/auth', authRoutes);
+app.use('/airport_pickup/api', apiRoutes);
+app.use('/airport_pickup/post', postRoutes);
+app.use('/airport_pickup/token', tokenRoutes);
 
-const server = https.createServer(
-  {
-    key: fs.readFileSync(path.join(__dirname, 'lsucssa.key')),
-    cert: fs.readFileSync(path.join(__dirname, 'lsucssa_org.crt')),
-  },
-  app,
-);
+const server = isDev
+  ? http.createServer(app)
+  : https.createServer(
+      {
+        key: fs.readFileSync(path.join(__dirname, 'lsucssa.key')),
+        cert: fs.readFileSync(path.join(__dirname, 'lsucssa_org.crt')),
+      },
+      app,
+    );
 
 // Start your app.
-// const server = app.
 server.listen(port, host, async err => {
   if (err) {
     return logger.error(err.message);
@@ -140,13 +133,13 @@ server.listen(port, host, async err => {
 });
 
 const io = socket(server);
-io.on('connection', socket => {
+io.on('connection', s => {
   // console.log("socket connect");
-  socket.on('volunteer accepted', function(msg) {
+  s.on('volunteer accepted', msg => {
     io.emit('volunteer accepted', msg);
     // console.log("accepted?: " + msg);
   });
-  socket.on('pickup request', function(msg) {
+  s.on('pickup request', msg => {
     io.emit('pickup request', msg);
     // console.log('accepted?: ' + msg);
   });
